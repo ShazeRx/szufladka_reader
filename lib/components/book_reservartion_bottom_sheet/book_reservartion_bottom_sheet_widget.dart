@@ -106,8 +106,8 @@ class _BookReservartionBottomSheetWidgetState
                         color: FlutterFlowTheme.of(context).secondaryText,
                         size: 24.0,
                       ),
-                      onPressed: () {
-                        print('IconButton pressed ...');
+                      onPressed: () async {
+                        Navigator.pop(context);
                       },
                     ),
                   ),
@@ -243,6 +243,7 @@ class _BookReservartionBottomSheetWidgetState
                         _model.order = await actions.bookABook(
                           widget.book!,
                         );
+                        Navigator.pop(context);
                         await widget.callback?.call(
                           _model.order,
                         );

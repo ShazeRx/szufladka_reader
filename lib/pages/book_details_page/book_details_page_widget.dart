@@ -192,33 +192,37 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Opis',
-                            textAlign: TextAlign.start,
-                            style:
-                                FlutterFlowTheme.of(context).bodyLarge.override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                          ),
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 8.0, 0.0, 0.0),
-                              child: Text(
-                                valueOrDefault<String>(
-                                  widget.book?.description,
-                                  'desc',
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Opis',
+                              textAlign: TextAlign.start,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyLarge
+                                  .override(
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                            ),
+                            Flexible(
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 8.0, 0.0, 0.0),
+                                child: Text(
+                                  valueOrDefault<String>(
+                                    widget.book?.description,
+                                    'desc',
+                                  ),
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
                                 ),
-                                style: FlutterFlowTheme.of(context).bodyMedium,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
