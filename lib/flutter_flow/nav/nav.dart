@@ -95,24 +95,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => OnboardingWidget(),
             ),
             FFRoute(
-              name: 'OnboardingPhoneNumberOtp',
-              path: 'onboardingPhoneNumberOtp',
-              builder: (context, params) => OnboardingPhoneNumberOtpWidget(),
-            ),
-            FFRoute(
-              name: 'OnboardingPhoneNumberRequest',
-              path: 'onboardingPhoneNumberRequest',
-              builder: (context, params) =>
-                  OnboardingPhoneNumberRequestWidget(),
-            ),
-            FFRoute(
-              name: 'MyBookshelf',
-              path: 'myBookshelf',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'MyBookshelf')
-                  : MyBookshelfWidget(),
-            ),
-            FFRoute(
               name: 'SearchPage',
               path: 'searchPage',
               builder: (context, params) => params.isEmpty
@@ -167,11 +149,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'ProfilePage')
                   : ProfilePageWidget(),
-            ),
-            FFRoute(
-              name: 'Details04CoffeeProduct',
-              path: 'details04CoffeeProduct',
-              builder: (context, params) => Details04CoffeeProductWidget(),
             ),
             FFRoute(
               name: 'List06UserSearch',

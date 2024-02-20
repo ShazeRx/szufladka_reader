@@ -13,13 +13,7 @@ import 'package:flutter/material.dart';
 // Set your action name, define your arguments and return parameter,
 // and then add the boilerplate code using the green button on the right!
 
-import 'package:firebase_auth/firebase_auth.dart';
-
-Future<DocumentReference> getCurrentUserReference() async {
-  final user = FirebaseAuth.instance.currentUser!!;
-
-  final uid = user.uid;
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final DocumentReference userRef = firestore.collection('users').doc(uid);
-  return userRef;
+Future bookABook(DocumentReference book) async {
+  final firestore = FirebaseFirestore.instance;
+  final ordersRef = firestore.collection("orders");
 }

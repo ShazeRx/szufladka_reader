@@ -61,8 +61,6 @@ dependencies:
   path_provider_android: 2.0.25
   path_provider_foundation: 2.2.2
   path_provider_platform_interface: 2.0.6
-  percent_indicator: 4.2.2
-  pin_code_fields: 8.0.1
   plugin_platform_interface: 2.1.6
   provider: 6.0.5
   rxdart: 0.27.7

@@ -119,7 +119,6 @@ class _NavBarPageState extends State<NavBarPage> {
     final tabs = {
       'home': HomeWidget(),
       'SearchPage': SearchPageWidget(),
-      'MyBookshelf': MyBookshelfWidget(),
       'ProfilePage': ProfilePageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
@@ -153,14 +152,6 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24.0,
             ),
             label: 'Home',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.menu_book_sharp,
-              size: 24.0,
-            ),
-            label: 'Settings',
             tooltip: '',
           ),
           BottomNavigationBarItem(
