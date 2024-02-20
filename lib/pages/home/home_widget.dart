@@ -132,10 +132,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                                         return ListView.separated(
                                           padding: EdgeInsets.zero,
                                           primary: false,
-                                          scrollDirection: Axis.vertical,
+                                          scrollDirection: Axis.horizontal,
                                           itemCount: ordersList.length,
                                           separatorBuilder: (_, __) =>
-                                              SizedBox(height: 10.0),
+                                              SizedBox(width: 10.0),
                                           itemBuilder:
                                               (context, ordersListIndex) {
                                             final ordersListItem =
@@ -278,38 +278,59 @@ class _HomeWidgetState extends State<HomeWidget> {
                                         return ListView.separated(
                                           padding: EdgeInsets.zero,
                                           primary: false,
-                                          scrollDirection: Axis.vertical,
+                                          scrollDirection: Axis.horizontal,
                                           itemCount: newArrivalsList.length,
                                           separatorBuilder: (_, __) =>
-                                              SizedBox(height: 10.0),
+                                              SizedBox(width: 10.0),
                                           itemBuilder:
                                               (context, newArrivalsListIndex) {
                                             final newArrivalsListItem =
                                                 newArrivalsList[
                                                     newArrivalsListIndex];
                                             return Container(
-                                              width: double.infinity,
-                                              height: 250.0,
+                                              width: 200.0,
                                               decoration: BoxDecoration(),
-                                              child: wrapWithModel(
-                                                model: _model.bookCardModels
-                                                    .getModel(
-                                                  newArrivalsListIndex
-                                                      .toString(),
-                                                  newArrivalsListIndex,
-                                                ),
-                                                updateCallback: () =>
-                                                    setState(() {}),
-                                                child: BookCardWidget(
-                                                  key: Key(
-                                                    'Keyvqo_${newArrivalsListIndex.toString()}',
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  context.pushNamed(
+                                                    'BookDetailsPage',
+                                                    queryParameters: {
+                                                      'book': serializeParam(
+                                                        newArrivalsListItem,
+                                                        ParamType.Document,
+                                                      ),
+                                                    }.withoutNulls,
+                                                    extra: <String, dynamic>{
+                                                      'book':
+                                                          newArrivalsListItem,
+                                                    },
+                                                  );
+                                                },
+                                                child: wrapWithModel(
+                                                  model: _model.bookCardModels
+                                                      .getModel(
+                                                    newArrivalsListIndex
+                                                        .toString(),
+                                                    newArrivalsListIndex,
                                                   ),
-                                                  title:
-                                                      newArrivalsListItem.title,
-                                                  author: newArrivalsListItem
-                                                      .author,
-                                                  image:
-                                                      newArrivalsListItem.photo,
+                                                  updateCallback: () =>
+                                                      setState(() {}),
+                                                  child: BookCardWidget(
+                                                    key: Key(
+                                                      'Key3n4_${newArrivalsListIndex.toString()}',
+                                                    ),
+                                                    title: newArrivalsListItem
+                                                        .title,
+                                                    author: newArrivalsListItem
+                                                        .author,
+                                                    image: newArrivalsListItem
+                                                        .photo,
+                                                  ),
                                                 ),
                                               ),
                                             );

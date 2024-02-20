@@ -24,9 +24,9 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInStatuses(
 
   final ordersRef = db.collection("orders");
 
-  final query = ordersRef.where("user", isEqualTo: userRef).limit(5);
+  var query = ordersRef.where("user", isEqualTo: userRef).limit(5);
 
-  for (status in statusList) {
+  for (var status in statusList) {
     query = query.where("status", isEqualTo: status.name);
   }
 
@@ -38,7 +38,7 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInStatuses(
   }
 
   for (var order in orders) {
-    DocumentReference bookRef = order.book;
+    DocumentReference bookRef = order.book!;
     orderedBooks.add(OrderedBookStruct(
         book: bookRef,
         endDate: order.endDate,

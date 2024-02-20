@@ -13,12 +13,13 @@ import 'package:flutter/material.dart';
 // Set your action name, define your arguments and return parameter,
 // and then add the boilerplate code using the green button on the right!
 
-Future<DocumentReference?> getOrderForABookOrNull(DocumentReference book) {
+Future<DocumentReference?> getOrderForABookOrNull(
+    DocumentReference book) async {
   final userRef = await getCurrentUserReference();
 
   final firestore = FirebaseFirestore.instance;
 
-  final ordersRef = db.collection("orders");
+  final ordersRef = firestore.collection("orders");
 
   final query = ordersRef
       .where("user", isEqualTo: userRef)
@@ -27,5 +28,10 @@ Future<DocumentReference?> getOrderForABookOrNull(DocumentReference book) {
       .where("status", isEqualTo: OrderStatus.Completed)
       .limit(1);
 
+  final snapshot = await query.get();
+
+  if (snapshot.size != 0) {
+    return snapshot.docs[0].reference;
+  }
   return null;
 }

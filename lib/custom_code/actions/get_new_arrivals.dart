@@ -19,8 +19,7 @@ Future<List<BooksRecord>> getNewArrivals() async {
 
   final booksCollectionRef = firestore.collection("books");
 
-  final newArrivalsQuery =
-      booksCollectionRef.orderBy(descending: "dateAdded").limit(10);
+  final newArrivalsQuery = booksCollectionRef.orderBy("dateAdded").limit(10);
 
   final newArrivalsSnapshot = await newArrivalsQuery.get();
 
