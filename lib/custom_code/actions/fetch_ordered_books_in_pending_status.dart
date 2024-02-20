@@ -6,7 +6,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom actions
 import 'package:flutter/material.dart';
-
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
@@ -17,24 +16,23 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInPendingStatus() async {
 
   List<OrderedBookStruct> orderedBooks = [];
 
-  final userRef = await getCurrentUserReference();
+  final userRef = getCurrentUserReference();
 
   final db = FirebaseFirestore.instance;
 
   final ordersRef = db.collection("orders");
 
   final query = ordersRef
-      .where("status", isEqualTo: OrderStatus.Completed.name)
+      .where("status", isEqualTo: OrderStatus.Completed)
       .where("user", isEqualTo: userRef)
-      .limit(5);
-
-  final snapshot = await query.get();
-
-  for (var doc in snapshot.docs) {
-    var order = OrdersRecord.fromSnapshot(doc);
-    orders.add(order);
-  }
-
+      .limit(5)
+      .get()
+      .then((querySnapshot) {
+    for (var doc in querySnapshot.docs) {
+      var order = OrdersRecord.fromSnapshot(doc);
+      orders.add(order);
+    }
+  });
   for (var order in orders) {
     List<DocumentReference> bookRefs = List.from(order.books);
 
