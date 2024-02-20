@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 // Set your action name, define your arguments and return parameter,
 // and then add the boilerplate code using the green button on the right!
 Future<List<OrderedBookStruct>> fetchOrderedBooksInPendingStatus() async {
-  List<OrderStruct> orders = [];
+  List<OrdersRecord> orders = [];
 
   List<OrderedBookStruct> orderedBooks = [];
 
@@ -22,8 +22,6 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInPendingStatus() async {
 
   final ordersRef = db.collection("orders");
 
-  final booksRef = db.collection("books");
-
   final query = ordersRef
       .where("status", isEqualTo: OrderStatus.Completed)
       .where("user", isEqualTo: userRef)
@@ -31,7 +29,7 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInPendingStatus() async {
       .get()
       .then((querySnapshot) {
     for (var doc in querySnapshot.docs) {
-      var order = OrderStruct.fromMap(doc.data());
+      var order = OrdersRecord.fromSnapshot(doc);
       orders.add(order);
     }
   });
@@ -41,7 +39,7 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInPendingStatus() async {
     for (var bookRef in bookRefs) {
       DocumentSnapshot bookSnapshot = await bookRef.get();
       if (bookSnapshot.exists) {
-        var book = BookStruct.fromMap(bookSnapshot.data());
+        var book = BooksRecord.fromSnapshot(bookSnapshot);
         orderedBooks.add(OrderedBookStruct(
             author: book.author,
             title: book.title,

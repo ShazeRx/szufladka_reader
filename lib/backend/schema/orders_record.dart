@@ -47,6 +47,11 @@ class OrdersRecord extends FirestoreRecord {
   List<DocumentReference> get books => _books ?? const [];
   bool hasBooks() => _books != null;
 
+  // "prolongations" field.
+  int? _prolongations;
+  int get prolongations => _prolongations ?? 0;
+  bool hasProlongations() => _prolongations != null;
+
   void _initializeFields() {
     _startDate = snapshotData['startDate'] as DateTime?;
     _endDate = snapshotData['endDate'] as DateTime?;
@@ -54,6 +59,7 @@ class OrdersRecord extends FirestoreRecord {
     _dateAdded = snapshotData['dateAdded'] as DateTime?;
     _status = deserializeEnum<OrderStatus>(snapshotData['status']);
     _books = getDataList(snapshotData['books']);
+    _prolongations = castToType<int>(snapshotData['prolongations']);
   }
 
   static CollectionReference get collection =>
@@ -95,6 +101,7 @@ Map<String, dynamic> createOrdersRecordData({
   DocumentReference? user,
   DateTime? dateAdded,
   OrderStatus? status,
+  int? prolongations,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -103,6 +110,7 @@ Map<String, dynamic> createOrdersRecordData({
       'user': user,
       'dateAdded': dateAdded,
       'status': status,
+      'prolongations': prolongations,
     }.withoutNulls,
   );
 
@@ -120,12 +128,20 @@ class OrdersRecordDocumentEquality implements Equality<OrdersRecord> {
         e1?.user == e2?.user &&
         e1?.dateAdded == e2?.dateAdded &&
         e1?.status == e2?.status &&
-        listEquality.equals(e1?.books, e2?.books);
+        listEquality.equals(e1?.books, e2?.books) &&
+        e1?.prolongations == e2?.prolongations;
   }
 
   @override
-  int hash(OrdersRecord? e) => const ListEquality().hash(
-      [e?.startDate, e?.endDate, e?.user, e?.dateAdded, e?.status, e?.books]);
+  int hash(OrdersRecord? e) => const ListEquality().hash([
+        e?.startDate,
+        e?.endDate,
+        e?.user,
+        e?.dateAdded,
+        e?.status,
+        e?.books,
+        e?.prolongations
+      ]);
 
   @override
   bool isValidKey(Object? o) => o is OrdersRecord;
