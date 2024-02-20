@@ -12,16 +12,12 @@ import '/flutter_flow/flutter_flow_util.dart';
 class OrderedBookStruct extends FFFirebaseStruct {
   OrderedBookStruct({
     DateTime? endDate,
-    String? title,
-    String? author,
     bool? canBeProlonged,
-    String? photo,
+    DocumentReference? book,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _endDate = endDate,
-        _title = title,
-        _author = author,
         _canBeProlonged = canBeProlonged,
-        _photo = photo,
+        _book = book,
         super(firestoreUtilData);
 
   // "endDate" field.
@@ -30,37 +26,23 @@ class OrderedBookStruct extends FFFirebaseStruct {
   set endDate(DateTime? val) => _endDate = val;
   bool hasEndDate() => _endDate != null;
 
-  // "title" field.
-  String? _title;
-  String get title => _title ?? '';
-  set title(String? val) => _title = val;
-  bool hasTitle() => _title != null;
-
-  // "author" field.
-  String? _author;
-  String get author => _author ?? '';
-  set author(String? val) => _author = val;
-  bool hasAuthor() => _author != null;
-
   // "canBeProlonged" field.
   bool? _canBeProlonged;
   bool get canBeProlonged => _canBeProlonged ?? false;
   set canBeProlonged(bool? val) => _canBeProlonged = val;
   bool hasCanBeProlonged() => _canBeProlonged != null;
 
-  // "photo" field.
-  String? _photo;
-  String get photo => _photo ?? '';
-  set photo(String? val) => _photo = val;
-  bool hasPhoto() => _photo != null;
+  // "book" field.
+  DocumentReference? _book;
+  DocumentReference? get book => _book;
+  set book(DocumentReference? val) => _book = val;
+  bool hasBook() => _book != null;
 
   static OrderedBookStruct fromMap(Map<String, dynamic> data) =>
       OrderedBookStruct(
         endDate: data['endDate'] as DateTime?,
-        title: data['title'] as String?,
-        author: data['author'] as String?,
         canBeProlonged: data['canBeProlonged'] as bool?,
-        photo: data['photo'] as String?,
+        book: data['book'] as DocumentReference?,
       );
 
   static OrderedBookStruct? maybeFromMap(dynamic data) => data is Map
@@ -69,10 +51,8 @@ class OrderedBookStruct extends FFFirebaseStruct {
 
   Map<String, dynamic> toMap() => {
         'endDate': _endDate,
-        'title': _title,
-        'author': _author,
         'canBeProlonged': _canBeProlonged,
-        'photo': _photo,
+        'book': _book,
       }.withoutNulls;
 
   @override
@@ -81,21 +61,13 @@ class OrderedBookStruct extends FFFirebaseStruct {
           _endDate,
           ParamType.DateTime,
         ),
-        'title': serializeParam(
-          _title,
-          ParamType.String,
-        ),
-        'author': serializeParam(
-          _author,
-          ParamType.String,
-        ),
         'canBeProlonged': serializeParam(
           _canBeProlonged,
           ParamType.bool,
         ),
-        'photo': serializeParam(
-          _photo,
-          ParamType.String,
+        'book': serializeParam(
+          _book,
+          ParamType.DocumentReference,
         ),
       }.withoutNulls;
 
@@ -106,25 +78,16 @@ class OrderedBookStruct extends FFFirebaseStruct {
           ParamType.DateTime,
           false,
         ),
-        title: deserializeParam(
-          data['title'],
-          ParamType.String,
-          false,
-        ),
-        author: deserializeParam(
-          data['author'],
-          ParamType.String,
-          false,
-        ),
         canBeProlonged: deserializeParam(
           data['canBeProlonged'],
           ParamType.bool,
           false,
         ),
-        photo: deserializeParam(
-          data['photo'],
-          ParamType.String,
+        book: deserializeParam(
+          data['book'],
+          ParamType.DocumentReference,
           false,
+          collectionNamePath: ['books'],
         ),
       );
 
@@ -135,23 +98,19 @@ class OrderedBookStruct extends FFFirebaseStruct {
   bool operator ==(Object other) {
     return other is OrderedBookStruct &&
         endDate == other.endDate &&
-        title == other.title &&
-        author == other.author &&
         canBeProlonged == other.canBeProlonged &&
-        photo == other.photo;
+        book == other.book;
   }
 
   @override
-  int get hashCode => const ListEquality()
-      .hash([endDate, title, author, canBeProlonged, photo]);
+  int get hashCode =>
+      const ListEquality().hash([endDate, canBeProlonged, book]);
 }
 
 OrderedBookStruct createOrderedBookStruct({
   DateTime? endDate,
-  String? title,
-  String? author,
   bool? canBeProlonged,
-  String? photo,
+  DocumentReference? book,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -159,10 +118,8 @@ OrderedBookStruct createOrderedBookStruct({
 }) =>
     OrderedBookStruct(
       endDate: endDate,
-      title: title,
-      author: author,
       canBeProlonged: canBeProlonged,
-      photo: photo,
+      book: book,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,

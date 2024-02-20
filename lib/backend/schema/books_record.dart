@@ -67,6 +67,11 @@ class BooksRecord extends FirestoreRecord {
   String get language => _language ?? '';
   bool hasLanguage() => _language != null;
 
+  // "dateAdded" field.
+  DateTime? _dateAdded;
+  DateTime? get dateAdded => _dateAdded;
+  bool hasDateAdded() => _dateAdded != null;
+
   void _initializeFields() {
     _title = snapshotData['title'] as String?;
     _author = snapshotData['author'] as String?;
@@ -78,6 +83,7 @@ class BooksRecord extends FirestoreRecord {
     _publisher = snapshotData['publisher'] as String?;
     _isbn = snapshotData['isbn'] as String?;
     _language = snapshotData['language'] as String?;
+    _dateAdded = snapshotData['dateAdded'] as DateTime?;
   }
 
   static CollectionReference get collection =>
@@ -124,6 +130,7 @@ Map<String, dynamic> createBooksRecordData({
   String? publisher,
   String? isbn,
   String? language,
+  DateTime? dateAdded,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -137,6 +144,7 @@ Map<String, dynamic> createBooksRecordData({
       'publisher': publisher,
       'isbn': isbn,
       'language': language,
+      'dateAdded': dateAdded,
     }.withoutNulls,
   );
 
@@ -157,7 +165,8 @@ class BooksRecordDocumentEquality implements Equality<BooksRecord> {
         e1?.category == e2?.category &&
         e1?.publisher == e2?.publisher &&
         e1?.isbn == e2?.isbn &&
-        e1?.language == e2?.language;
+        e1?.language == e2?.language &&
+        e1?.dateAdded == e2?.dateAdded;
   }
 
   @override
@@ -171,7 +180,8 @@ class BooksRecordDocumentEquality implements Equality<BooksRecord> {
         e?.category,
         e?.publisher,
         e?.isbn,
-        e?.language
+        e?.language,
+        e?.dateAdded
       ]);
 
   @override

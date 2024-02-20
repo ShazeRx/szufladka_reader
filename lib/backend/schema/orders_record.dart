@@ -42,15 +42,15 @@ class OrdersRecord extends FirestoreRecord {
   OrderStatus? get status => _status;
   bool hasStatus() => _status != null;
 
-  // "books" field.
-  List<DocumentReference>? _books;
-  List<DocumentReference> get books => _books ?? const [];
-  bool hasBooks() => _books != null;
-
   // "prolongations" field.
   int? _prolongations;
   int get prolongations => _prolongations ?? 0;
   bool hasProlongations() => _prolongations != null;
+
+  // "book" field.
+  DocumentReference? _book;
+  DocumentReference? get book => _book;
+  bool hasBook() => _book != null;
 
   void _initializeFields() {
     _startDate = snapshotData['startDate'] as DateTime?;
@@ -58,8 +58,8 @@ class OrdersRecord extends FirestoreRecord {
     _user = snapshotData['user'] as DocumentReference?;
     _dateAdded = snapshotData['dateAdded'] as DateTime?;
     _status = deserializeEnum<OrderStatus>(snapshotData['status']);
-    _books = getDataList(snapshotData['books']);
     _prolongations = castToType<int>(snapshotData['prolongations']);
+    _book = snapshotData['book'] as DocumentReference?;
   }
 
   static CollectionReference get collection =>
@@ -102,6 +102,7 @@ Map<String, dynamic> createOrdersRecordData({
   DateTime? dateAdded,
   OrderStatus? status,
   int? prolongations,
+  DocumentReference? book,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -111,6 +112,7 @@ Map<String, dynamic> createOrdersRecordData({
       'dateAdded': dateAdded,
       'status': status,
       'prolongations': prolongations,
+      'book': book,
     }.withoutNulls,
   );
 
@@ -122,14 +124,13 @@ class OrdersRecordDocumentEquality implements Equality<OrdersRecord> {
 
   @override
   bool equals(OrdersRecord? e1, OrdersRecord? e2) {
-    const listEquality = ListEquality();
     return e1?.startDate == e2?.startDate &&
         e1?.endDate == e2?.endDate &&
         e1?.user == e2?.user &&
         e1?.dateAdded == e2?.dateAdded &&
         e1?.status == e2?.status &&
-        listEquality.equals(e1?.books, e2?.books) &&
-        e1?.prolongations == e2?.prolongations;
+        e1?.prolongations == e2?.prolongations &&
+        e1?.book == e2?.book;
   }
 
   @override
@@ -139,8 +140,8 @@ class OrdersRecordDocumentEquality implements Equality<OrdersRecord> {
         e?.user,
         e?.dateAdded,
         e?.status,
-        e?.books,
-        e?.prolongations
+        e?.prolongations,
+        e?.book
       ]);
 
   @override

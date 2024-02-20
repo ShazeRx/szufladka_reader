@@ -13,22 +13,19 @@ import 'package:flutter/material.dart';
 // Set your action name, define your arguments and return parameter,
 // and then add the boilerplate code using the green button on the right!
 
-Future<OrdersRecord> bookABook(BooksRecord book) async {
-  final firestore = FirebaseFirestore.instance;
-  final ordersRef = firestore.collection("orders");
+Future<DocumentReference?> getOrderForABookOrNull(DocumentReference book) {
   final userRef = await getCurrentUserReference();
-  final newOrder = createOrdersRecordData(
-      startDate: null,
-      endDate: null,
-      user: userRef,
-      dateAdded: DateTime.now(),
-      status: OrderStatus.Pending,
-      prolongations: 0,
-      book: book.reference);
 
-  final newOrderRef = await ordersRef.add(newOrder);
+  final firestore = FirebaseFirestore.instance;
 
-  final newOrderDoc = await newOrderRef.get();
+  final ordersRef = db.collection("orders");
 
-  return OrdersRecord.fromSnapshot(newOrderDoc);
+  final query = ordersRef
+      .where("user", isEqualTo: userRef)
+      .where("book", isEqualTo: book)
+      .where("status", isEqualTo: OrderStatus.Pending)
+      .where("status", isEqualTo: OrderStatus.Completed)
+      .limit(1);
+
+  return null;
 }

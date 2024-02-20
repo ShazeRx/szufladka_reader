@@ -12,7 +12,8 @@ import 'package:flutter/material.dart';
 
 // Set your action name, define your arguments and return parameter,
 // and then add the boilerplate code using the green button on the right!
-Future<List<OrderedBookStruct>> fetchOrderedBooksInPendingStatus() async {
+Future<List<OrderedBookStruct>> fetchOrderedBooksInStatuses(
+    List<OrderStatus> statusList) async {
   List<OrdersRecord> orders = [];
 
   List<OrderedBookStruct> orderedBooks = [];
@@ -23,10 +24,11 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInPendingStatus() async {
 
   final ordersRef = db.collection("orders");
 
-  final query = ordersRef
-      .where("status", isEqualTo: OrderStatus.Completed.name)
-      .where("user", isEqualTo: userRef)
-      .limit(5);
+  final query = ordersRef.where("user", isEqualTo: userRef).limit(5);
+
+  for (status in statusList) {
+    query = query.where("status", isEqualTo: status.name);
+  }
 
   final snapshot = await query.get();
 
@@ -36,20 +38,11 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInPendingStatus() async {
   }
 
   for (var order in orders) {
-    List<DocumentReference> bookRefs = List.from(order.books);
-
-    for (var bookRef in bookRefs) {
-      DocumentSnapshot bookSnapshot = await bookRef.get();
-      if (bookSnapshot.exists) {
-        var book = BooksRecord.fromSnapshot(bookSnapshot);
-        orderedBooks.add(OrderedBookStruct(
-            author: book.author,
-            title: book.title,
-            photo: book.photo,
-            endDate: order.endDate,
-            canBeProlonged: order.prolongations < 3));
-      }
-    }
+    DocumentReference bookRef = order.book;
+    orderedBooks.add(OrderedBookStruct(
+        book: bookRef,
+        endDate: order.endDate,
+        canBeProlonged: order.prolongations < 3));
   }
 
   return orderedBooks;

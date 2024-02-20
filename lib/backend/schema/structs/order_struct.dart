@@ -16,16 +16,16 @@ class OrderStruct extends FFFirebaseStruct {
     DateTime? endDate,
     DateTime? dateAdded,
     OrderStatus? status,
-    List<DocumentReference>? books,
     int? prolongations,
+    DocumentReference? book,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _user = user,
         _startDate = startDate,
         _endDate = endDate,
         _dateAdded = dateAdded,
         _status = status,
-        _books = books,
         _prolongations = prolongations,
+        _book = book,
         super(firestoreUtilData);
 
   // "user" field.
@@ -58,14 +58,6 @@ class OrderStruct extends FFFirebaseStruct {
   set status(OrderStatus? val) => _status = val;
   bool hasStatus() => _status != null;
 
-  // "books" field.
-  List<DocumentReference>? _books;
-  List<DocumentReference> get books => _books ?? const [];
-  set books(List<DocumentReference>? val) => _books = val;
-  void updateBooks(Function(List<DocumentReference>) updateFn) =>
-      updateFn(_books ??= []);
-  bool hasBooks() => _books != null;
-
   // "prolongations" field.
   int? _prolongations;
   int get prolongations => _prolongations ?? 0;
@@ -74,14 +66,20 @@ class OrderStruct extends FFFirebaseStruct {
       _prolongations = prolongations + amount;
   bool hasProlongations() => _prolongations != null;
 
+  // "book" field.
+  DocumentReference? _book;
+  DocumentReference? get book => _book;
+  set book(DocumentReference? val) => _book = val;
+  bool hasBook() => _book != null;
+
   static OrderStruct fromMap(Map<String, dynamic> data) => OrderStruct(
         user: data['user'] as DocumentReference?,
         startDate: data['startDate'] as DateTime?,
         endDate: data['endDate'] as DateTime?,
         dateAdded: data['dateAdded'] as DateTime?,
         status: deserializeEnum<OrderStatus>(data['status']),
-        books: getDataList(data['books']),
         prolongations: castToType<int>(data['prolongations']),
+        book: data['book'] as DocumentReference?,
       );
 
   static OrderStruct? maybeFromMap(dynamic data) =>
@@ -93,8 +91,8 @@ class OrderStruct extends FFFirebaseStruct {
         'endDate': _endDate,
         'dateAdded': _dateAdded,
         'status': _status?.serialize(),
-        'books': _books,
         'prolongations': _prolongations,
+        'book': _book,
       }.withoutNulls;
 
   @override
@@ -119,14 +117,13 @@ class OrderStruct extends FFFirebaseStruct {
           _status,
           ParamType.Enum,
         ),
-        'books': serializeParam(
-          _books,
-          ParamType.DocumentReference,
-          true,
-        ),
         'prolongations': serializeParam(
           _prolongations,
           ParamType.int,
+        ),
+        'book': serializeParam(
+          _book,
+          ParamType.DocumentReference,
         ),
       }.withoutNulls;
 
@@ -158,16 +155,16 @@ class OrderStruct extends FFFirebaseStruct {
           ParamType.Enum,
           false,
         ),
-        books: deserializeParam<DocumentReference>(
-          data['books'],
-          ParamType.DocumentReference,
-          true,
-          collectionNamePath: ['books'],
-        ),
         prolongations: deserializeParam(
           data['prolongations'],
           ParamType.int,
           false,
+        ),
+        book: deserializeParam(
+          data['book'],
+          ParamType.DocumentReference,
+          false,
+          collectionNamePath: ['books'],
         ),
       );
 
@@ -176,20 +173,19 @@ class OrderStruct extends FFFirebaseStruct {
 
   @override
   bool operator ==(Object other) {
-    const listEquality = ListEquality();
     return other is OrderStruct &&
         user == other.user &&
         startDate == other.startDate &&
         endDate == other.endDate &&
         dateAdded == other.dateAdded &&
         status == other.status &&
-        listEquality.equals(books, other.books) &&
-        prolongations == other.prolongations;
+        prolongations == other.prolongations &&
+        book == other.book;
   }
 
   @override
-  int get hashCode => const ListEquality().hash(
-      [user, startDate, endDate, dateAdded, status, books, prolongations]);
+  int get hashCode => const ListEquality()
+      .hash([user, startDate, endDate, dateAdded, status, prolongations, book]);
 }
 
 OrderStruct createOrderStruct({
@@ -199,6 +195,7 @@ OrderStruct createOrderStruct({
   DateTime? dateAdded,
   OrderStatus? status,
   int? prolongations,
+  DocumentReference? book,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -211,6 +208,7 @@ OrderStruct createOrderStruct({
       dateAdded: dateAdded,
       status: status,
       prolongations: prolongations,
+      book: book,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,

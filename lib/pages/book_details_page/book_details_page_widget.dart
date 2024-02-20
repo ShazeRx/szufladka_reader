@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/enums/enums.dart';
 import '/components/base_button_widget.dart';
@@ -8,8 +9,11 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,6 +42,23 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => BookDetailsPageModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.orderRefForABook = await actions.getOrderForABookOrNull(
+        widget.book!.reference,
+      );
+      if (_model.orderRefForABook != null) {
+        _model.orderForABook =
+            await OrdersRecord.getDocumentOnce(_model.orderRefForABook!);
+      } else {
+        return;
+      }
+
+      setState(() {
+        _model.order = _model.orderForABook;
+      });
+    });
   }
 
   @override
