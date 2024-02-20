@@ -13,7 +13,8 @@ import 'package:flutter/material.dart';
 // Set your action name, define your arguments and return parameter,
 // and then add the boilerplate code using the green button on the right!
 
-Future bookABook(DocumentReference book) async {
+Future<OrdersRecord> bookABook(BooksRecord book) async {
   final firestore = FirebaseFirestore.instance;
   final ordersRef = firestore.collection("orders");
+  return OrdersRecord();
 }

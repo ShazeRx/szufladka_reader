@@ -1,6 +1,9 @@
 import '/backend/backend.dart';
 import '/backend/schema/enums/enums.dart';
+import '/components/base_button_widget.dart';
 import '/components/book_info_part_widget.dart';
+import '/components/book_reservartion_bottom_sheet/book_reservartion_bottom_sheet_widget.dart';
+import '/components/icon_info_row_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -29,6 +32,22 @@ class BookDetailsPageModel extends FlutterFlowModel<BookDetailsPageWidget> {
   late BookInfoPartModel bookInfoPartModel3;
   // Model for bookInfoPart component.
   late BookInfoPartModel bookInfoPartModel4;
+  // Model for baseButton component.
+  late BaseButtonModel baseButtonModel1;
+  // Model for iconInfoRow component.
+  late IconInfoRowModel iconInfoRowModel1;
+  // Model for baseButton component.
+  late BaseButtonModel baseButtonModel2;
+  // Model for iconInfoRow component.
+  late IconInfoRowModel iconInfoRowModel2;
+  // Model for baseButton component.
+  late BaseButtonModel baseButtonModel3;
+  // Model for iconInfoRow component.
+  late IconInfoRowModel iconInfoRowModel3;
+  // Model for baseButton component.
+  late BaseButtonModel baseButtonModel4;
+  // Model for baseButton component.
+  late BaseButtonModel baseButtonModel5;
 
   /// Initialization and disposal methods.
 
@@ -38,6 +57,14 @@ class BookDetailsPageModel extends FlutterFlowModel<BookDetailsPageWidget> {
     bookInfoPartModel2 = createModel(context, () => BookInfoPartModel());
     bookInfoPartModel3 = createModel(context, () => BookInfoPartModel());
     bookInfoPartModel4 = createModel(context, () => BookInfoPartModel());
+    baseButtonModel1 = createModel(context, () => BaseButtonModel());
+    iconInfoRowModel1 = createModel(context, () => IconInfoRowModel());
+    baseButtonModel2 = createModel(context, () => BaseButtonModel());
+    iconInfoRowModel2 = createModel(context, () => IconInfoRowModel());
+    baseButtonModel3 = createModel(context, () => BaseButtonModel());
+    iconInfoRowModel3 = createModel(context, () => IconInfoRowModel());
+    baseButtonModel4 = createModel(context, () => BaseButtonModel());
+    baseButtonModel5 = createModel(context, () => BaseButtonModel());
   }
 
   @override
@@ -47,6 +74,14 @@ class BookDetailsPageModel extends FlutterFlowModel<BookDetailsPageWidget> {
     bookInfoPartModel2.dispose();
     bookInfoPartModel3.dispose();
     bookInfoPartModel4.dispose();
+    baseButtonModel1.dispose();
+    iconInfoRowModel1.dispose();
+    baseButtonModel2.dispose();
+    iconInfoRowModel2.dispose();
+    baseButtonModel3.dispose();
+    iconInfoRowModel3.dispose();
+    baseButtonModel4.dispose();
+    baseButtonModel5.dispose();
   }
 
   /// Action blocks are added here.

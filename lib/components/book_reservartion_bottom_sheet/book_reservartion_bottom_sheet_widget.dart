@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,9 +14,11 @@ export 'book_reservartion_bottom_sheet_model.dart';
 class BookReservartionBottomSheetWidget extends StatefulWidget {
   const BookReservartionBottomSheetWidget({
     super.key,
+    required this.callback,
     required this.book,
   });
 
+  final Future Function(OrdersRecord? order)? callback;
   final BooksRecord? book;
 
   @override
@@ -236,8 +239,15 @@ class _BookReservartionBottomSheetWidgetState
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                     child: FFButtonWidget(
-                      onPressed: () {
-                        print('Button pressed ...');
+                      onPressed: () async {
+                        _model.order = await actions.bookABook(
+                          widget.book!,
+                        );
+                        await widget.callback?.call(
+                          _model.order,
+                        );
+
+                        setState(() {});
                       },
                       text: 'Potwierdź rezerwację',
                       options: FFButtonOptions(

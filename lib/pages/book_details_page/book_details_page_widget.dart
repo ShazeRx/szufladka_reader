@@ -1,6 +1,9 @@
 import '/backend/backend.dart';
 import '/backend/schema/enums/enums.dart';
+import '/components/base_button_widget.dart';
 import '/components/book_info_part_widget.dart';
+import '/components/book_reservartion_bottom_sheet/book_reservartion_bottom_sheet_widget.dart';
+import '/components/icon_info_row_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -361,117 +364,189 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
                           if (_model.order != null) {
                             return Column(
                               mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                FFButtonWidget(
-                                  onPressed: () {
-                                    print('Button pressed ...');
-                                  },
-                                  text: functions.getProlongateBookOptions(
-                                              _model.order!) !=
-                                          BookProlongateOptions.Available
-                                      ? 'Prolongata niedostępna'
-                                      : 'Prolonguj',
-                                  options: FFButtonOptions(
-                                    height: 40.0,
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        24.0, 0.0, 24.0, 0.0),
-                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .override(
-                                          fontFamily: 'Plus Jakarta Sans',
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
-                                        ),
-                                    elevation: 0.0,
-                                    borderSide: BorderSide(
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                ),
-                                if (functions.getProlongateBookOptions(
-                                        _model.order!) !=
-                                    BookProlongateOptions.Available)
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 16.0, 0.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Icon(
-                                          Icons.info,
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
-                                          size: 24.0,
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    6.0, 0.0, 0.0, 0.0),
-                                            child: Text(
-                                              () {
-                                                if (functions
-                                                        .getProlongateBookOptions(
-                                                            _model.order!) ==
-                                                    BookProlongateOptions
-                                                        .NoProlongationsLeft) {
-                                                  return 'Brak dostępnych prolongat. Maksymalna liczba prolongat wynosi 3 ';
-                                                } else if (functions
-                                                        .getProlongateBookOptions(
-                                                            _model.order!) ==
-                                                    BookProlongateOptions
-                                                        .TimedOut) {
-                                                  return 'Termin prolongaty minął. Prosimy o jak najszybszy zwrot książki';
-                                                } else {
-                                                  return 'Przedłużenie możliwe na 3 dni przed końcem terminu oddania';
-                                                }
-                                              }(),
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium,
+                                Builder(
+                                  builder: (context) {
+                                    if (functions.getProlongateBookOptions(
+                                            _model.order!) ==
+                                        BookProlongateOptions.TimedOut) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: wrapWithModel(
+                                                  model:
+                                                      _model.baseButtonModel1,
+                                                  updateCallback: () =>
+                                                      setState(() {}),
+                                                  child: BaseButtonWidget(
+                                                    text:
+                                                        'Prolongata niemożliwa',
+                                                    disabled: true,
+                                                    action: () async {},
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          wrapWithModel(
+                                            model: _model.iconInfoRowModel1,
+                                            updateCallback: () =>
+                                                setState(() {}),
+                                            child: IconInfoRowWidget(
+                                              text:
+                                                  'Termin oddania minął. Prosimy o jak najszybszy zwrot książki',
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                        ],
+                                      );
+                                    } else if (functions
+                                            .getProlongateBookOptions(
+                                                _model.order!) ==
+                                        BookProlongateOptions
+                                            .NoProlongationsLeft) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: wrapWithModel(
+                                                  model:
+                                                      _model.baseButtonModel2,
+                                                  updateCallback: () =>
+                                                      setState(() {}),
+                                                  child: BaseButtonWidget(
+                                                    text:
+                                                        'Prolongata niemożliwa',
+                                                    disabled: true,
+                                                    action: () async {},
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          wrapWithModel(
+                                            model: _model.iconInfoRowModel2,
+                                            updateCallback: () =>
+                                                setState(() {}),
+                                            child: IconInfoRowWidget(
+                                              text:
+                                                  'Wykorzystano maksymalną liczbę prolongat: 3',
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    } else if (functions
+                                            .getProlongateBookOptions(
+                                                _model.order!) ==
+                                        BookProlongateOptions
+                                            .TooEarlyToProlong) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: wrapWithModel(
+                                                  model:
+                                                      _model.baseButtonModel3,
+                                                  updateCallback: () =>
+                                                      setState(() {}),
+                                                  child: BaseButtonWidget(
+                                                    text:
+                                                        'Prolongata niemożliwa',
+                                                    disabled: true,
+                                                    action: () async {},
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          wrapWithModel(
+                                            model: _model.iconInfoRowModel3,
+                                            updateCallback: () =>
+                                                setState(() {}),
+                                            child: IconInfoRowWidget(
+                                              text:
+                                                  'Przedłużenie możliwe na 3 dni przed końcem terminu oddania.',
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    } else {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: wrapWithModel(
+                                                  model:
+                                                      _model.baseButtonModel4,
+                                                  updateCallback: () =>
+                                                      setState(() {}),
+                                                  child: BaseButtonWidget(
+                                                    text: 'Prolonguj',
+                                                    disabled: false,
+                                                    action: () async {},
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                  },
+                                ),
                               ],
                             );
                           } else {
-                            return FFButtonWidget(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              text: _model.order != null
-                                  ? 'Wypożyczona'
-                                  : 'Wypożycz',
-                              options: FFButtonOptions(
-                                height: 40.0,
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    24.0, 0.0, 24.0, 0.0),
-                                iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 0.0),
-                                color: FlutterFlowTheme.of(context).primary,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .titleSmall
-                                    .override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      color: Colors.white,
-                                    ),
-                                elevation: 0.0,
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(2.0),
+                            return wrapWithModel(
+                              model: _model.baseButtonModel5,
+                              updateCallback: () => setState(() {}),
+                              child: BaseButtonWidget(
+                                text: 'Wypożycz',
+                                disabled: false,
+                                action: () async {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    enableDrag: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return GestureDetector(
+                                        onTap: () => _model
+                                                .unfocusNode.canRequestFocus
+                                            ? FocusScope.of(context)
+                                                .requestFocus(
+                                                    _model.unfocusNode)
+                                            : FocusScope.of(context).unfocus(),
+                                        child: Padding(
+                                          padding:
+                                              MediaQuery.viewInsetsOf(context),
+                                          child:
+                                              BookReservartionBottomSheetWidget(
+                                            book: widget.book!,
+                                            callback: (order) async {
+                                              setState(() {
+                                                _model.order = order;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ).then((value) => safeSetState(() {}));
+                                },
                               ),
                             );
                           }
