@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/enums/enums.dart';
 import '/components/base_button_widget.dart';
+import '/components/book_cancelation_order_sheet/book_cancelation_order_sheet_widget.dart';
 import '/components/book_info_part_widget.dart';
 import '/components/book_reservartion_bottom_sheet/book_reservartion_bottom_sheet_widget.dart';
 import '/components/icon_info_row_widget.dart';
@@ -54,8 +55,12 @@ class BookDetailsPageModel extends FlutterFlowModel<BookDetailsPageWidget> {
   late IconInfoRowModel iconInfoRowModel3;
   // Model for baseButton component.
   late BaseButtonModel baseButtonModel4;
+  // Model for iconInfoRow component.
+  late IconInfoRowModel iconInfoRowModel4;
   // Model for baseButton component.
   late BaseButtonModel baseButtonModel5;
+  // Model for baseButton component.
+  late BaseButtonModel baseButtonModel6;
 
   /// Initialization and disposal methods.
 
@@ -72,7 +77,9 @@ class BookDetailsPageModel extends FlutterFlowModel<BookDetailsPageWidget> {
     baseButtonModel3 = createModel(context, () => BaseButtonModel());
     iconInfoRowModel3 = createModel(context, () => IconInfoRowModel());
     baseButtonModel4 = createModel(context, () => BaseButtonModel());
+    iconInfoRowModel4 = createModel(context, () => IconInfoRowModel());
     baseButtonModel5 = createModel(context, () => BaseButtonModel());
+    baseButtonModel6 = createModel(context, () => BaseButtonModel());
   }
 
   @override
@@ -89,7 +96,9 @@ class BookDetailsPageModel extends FlutterFlowModel<BookDetailsPageWidget> {
     baseButtonModel3.dispose();
     iconInfoRowModel3.dispose();
     baseButtonModel4.dispose();
+    iconInfoRowModel4.dispose();
     baseButtonModel5.dispose();
+    baseButtonModel6.dispose();
   }
 
   /// Action blocks are added here.

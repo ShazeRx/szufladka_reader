@@ -11,6 +11,7 @@ enum BookProlongateOptions {
   Available,
   NoProlongationsLeft,
   TooEarlyToProlong,
+  OrderInPendingStatus,
 }
 
 extension FFEnumExtensions<T extends Enum> on T {

@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/enums/enums.dart';
 import '/components/base_button_widget.dart';
+import '/components/book_cancelation_order_sheet/book_cancelation_order_sheet_widget.dart';
 import '/components/book_info_part_widget.dart';
 import '/components/book_reservartion_bottom_sheet/book_reservartion_bottom_sheet_widget.dart';
 import '/components/icon_info_row_widget.dart';
@@ -168,9 +169,15 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 30.0, 0.0, 0.0),
                               child: Text(
-                                widget.book!.available > 0
-                                    ? 'Dostępne'
-                                    : 'Niedostępne',
+                                () {
+                                  if (_model.order != null) {
+                                    return 'Wypożyczona do dnia ${dateTimeFormat('d/M/y', _model.order?.endDate)}';
+                                  } else if (widget.book!.available > 0) {
+                                    return 'Dostępna';
+                                  } else {
+                                    return 'Niedostępna';
+                                  }
+                                }(),
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -509,7 +516,11 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
                                           ),
                                         ],
                                       );
-                                    } else {
+                                    } else if (functions
+                                            .getProlongateBookOptions(
+                                                _model.order!) ==
+                                        BookProlongateOptions
+                                            .OrderInPendingStatus) {
                                       return Column(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
@@ -520,6 +531,83 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
                                                 child: wrapWithModel(
                                                   model:
                                                       _model.baseButtonModel4,
+                                                  updateCallback: () =>
+                                                      setState(() {}),
+                                                  child: BaseButtonWidget(
+                                                    text: 'Anuluj zamówienie',
+                                                    disabled: false,
+                                                    action: () async {
+                                                      await showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        enableDrag: false,
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return GestureDetector(
+                                                            onTap: () => _model
+                                                                    .unfocusNode
+                                                                    .canRequestFocus
+                                                                ? FocusScope.of(
+                                                                        context)
+                                                                    .requestFocus(
+                                                                        _model
+                                                                            .unfocusNode)
+                                                                : FocusScope.of(
+                                                                        context)
+                                                                    .unfocus(),
+                                                            child: Padding(
+                                                              padding: MediaQuery
+                                                                  .viewInsetsOf(
+                                                                      context),
+                                                              child:
+                                                                  BookCancelationOrderSheetWidget(
+                                                                order: _model
+                                                                    .order!,
+                                                                book: widget
+                                                                    .book!,
+                                                                callback:
+                                                                    () async {
+                                                                  setState(() {
+                                                                    _model.order =
+                                                                        null;
+                                                                  });
+                                                                },
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ).then((value) =>
+                                                          safeSetState(() {}));
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          wrapWithModel(
+                                            model: _model.iconInfoRowModel4,
+                                            updateCallback: () =>
+                                                setState(() {}),
+                                            child: IconInfoRowWidget(
+                                              text:
+                                                  'Zamówienie w statusie oczekującym. Możesz je jeszcze anulować',
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    } else {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: wrapWithModel(
+                                                  model:
+                                                      _model.baseButtonModel5,
                                                   updateCallback: () =>
                                                       setState(() {}),
                                                   child: BaseButtonWidget(
@@ -540,7 +628,7 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
                             );
                           } else {
                             return wrapWithModel(
-                              model: _model.baseButtonModel5,
+                              model: _model.baseButtonModel6,
                               updateCallback: () => setState(() {}),
                               child: BaseButtonWidget(
                                 text: 'Wypożycz',

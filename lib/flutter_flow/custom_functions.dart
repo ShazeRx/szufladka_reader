@@ -15,6 +15,8 @@ import '/backend/schema/enums/enums.dart';
 import '/auth/firebase_auth/auth_util.dart';
 
 BookProlongateOptions getProlongateBookOptions(OrdersRecord order) {
+  if (order.status == OrderStatus.Pending)
+    return BookProlongateOptions.OrderInPendingStatus;
   final prolongations = order.prolongations;
   if (prolongations > 2) return BookProlongateOptions.NoProlongationsLeft;
   final endDate = order.endDate!;
