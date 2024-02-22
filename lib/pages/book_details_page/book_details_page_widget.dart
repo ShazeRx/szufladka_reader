@@ -15,7 +15,6 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -71,15 +70,6 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -171,7 +161,12 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
                               child: Text(
                                 () {
                                   if (_model.order != null) {
-                                    return 'Wypożyczona do dnia ${dateTimeFormat('d/M/y', _model.order?.endDate)}';
+                                    return 'Wypożyczona do dnia ${dateTimeFormat(
+                                      'd/M/y',
+                                      _model.order?.endDate,
+                                      locale: FFLocalizations.of(context)
+                                          .languageCode,
+                                    )}';
                                   } else if (widget.book!.available > 0) {
                                     return 'Dostępna';
                                   } else {

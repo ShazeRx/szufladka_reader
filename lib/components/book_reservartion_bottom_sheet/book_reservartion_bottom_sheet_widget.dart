@@ -5,7 +5,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'book_reservartion_bottom_sheet_model.dart';
@@ -208,27 +207,6 @@ class _BookReservartionBottomSheetWidgetState
               height: 24.0,
               thickness: 2.0,
               color: FlutterFlowTheme.of(context).primaryBackground,
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Reservation valid till',
-                  style: FlutterFlowTheme.of(context).bodySmall.override(
-                        fontFamily: 'Plus Jakarta Sans',
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                Text(
-                  '01/01/2023',
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Plus Jakarta Sans',
-                        fontSize: 16.0,
-                      ),
-                ),
-              ],
             ),
             Row(
               mainAxisSize: MainAxisSize.max,

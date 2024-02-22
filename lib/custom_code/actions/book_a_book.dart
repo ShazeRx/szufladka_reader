@@ -28,6 +28,8 @@ Future<OrdersRecord> bookABook(BooksRecord book) async {
 
   final newOrderRef = await ordersRef.add(newOrder);
 
+  book.reference.update({"available": book.available - 1});
+
   final newOrderDoc = await newOrderRef.get();
 
   return OrdersRecord.fromSnapshot(newOrderDoc);

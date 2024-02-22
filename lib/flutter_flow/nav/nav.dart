@@ -124,7 +124,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'MyBookshelfPage',
               path: 'myBookshelfPage',
-              builder: (context, params) => MyBookshelfPageWidget(),
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'MyBookshelfPage')
+                  : MyBookshelfPageWidget(),
             ),
             FFRoute(
               name: 'Auth1',
@@ -154,6 +156,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'List06UserSearch',
               path: 'list06UserSearch',
               builder: (context, params) => List06UserSearchWidget(),
+            ),
+            FFRoute(
+              name: 'adminHome',
+              path: 'adminHome',
+              builder: (context, params) => AdminHomeWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),
@@ -327,6 +334,7 @@ class FFRoute {
           return null;
         },
         pageBuilder: (context, state) {
+          fixStatusBarOniOS16AndBelow(context);
           final ffParams = FFParameters(state, asyncParams);
           final page = ffParams.hasFutures
               ? FutureBuilder(

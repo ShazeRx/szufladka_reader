@@ -3,7 +3,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,6 +29,10 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
 
     _model.textController ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+          _model.textController?.text = 'Wiedźmin';
+        }));
   }
 
   @override
@@ -41,15 +44,6 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -68,7 +62,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
-                      'Search Result',
+                      'Szukaj',
                       style: FlutterFlowTheme.of(context).headlineSmall,
                     ),
                   ],
@@ -166,18 +160,17 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            width: 100.0,
-                            height: 130.0,
+                            width: 120.0,
+                            height: 150.0,
                             decoration: BoxDecoration(
-                              color: Color(0x67F0C0C0),
+                              color: FlutterFlowTheme.of(context)
+                                  .primaryBackground,
                               borderRadius: BorderRadius.circular(15.0),
                             ),
                             alignment: AlignmentDirectional(0.0, 0.0),
-                            child: Image.asset(
-                              'assets/images/li22301254_quantized.png',
-                              width: 100.0,
-                              height: 100.0,
-                              fit: BoxFit.fitHeight,
+                            child: Image.network(
+                              'https://s.lubimyczytac.pl/upload/books/240000/240312/490966-352x500.jpg',
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ],
@@ -192,7 +185,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Lorem Ipsum Book',
+                                'Wiedźmin: Miecz Przeznaczenia',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -201,7 +194,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                     ),
                               ),
                               Text(
-                                'By Lorep Ipsum',
+                                'Andrzej Sapkowski',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -216,369 +209,15 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   RatingBar.builder(
-                                    onRatingUpdate: (newValue) => setState(() =>
-                                        _model.ratingBarValue1 = newValue),
+                                    onRatingUpdate: (newValue) => setState(
+                                        () => _model.ratingBarValue = newValue),
                                     itemBuilder: (context, index) => Icon(
                                       Icons.star_rounded,
                                       color:
                                           FlutterFlowTheme.of(context).tertiary,
                                     ),
                                     direction: Axis.horizontal,
-                                    initialRating: _model.ratingBarValue1 ??=
-                                        5.0,
-                                    unratedColor: Color(0xFF9E9E9E),
-                                    itemCount: 5,
-                                    itemSize: 10.0,
-                                    glowColor:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        5.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      '5.0',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Plus Jakarta Sans',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            fontSize: 12.0,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 30.0,
-                            borderWidth: 1.0,
-                            buttonSize: 30.0,
-                            icon: FaIcon(
-                              FontAwesomeIcons.bookmark,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20.0,
-                            ),
-                            onPressed: () {
-                              print('IconButton pressed ...');
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 100.0,
-                            height: 130.0,
-                            decoration: BoxDecoration(
-                              color: Color(0x67F0C0C0),
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            alignment: AlignmentDirectional(0.0, 0.0),
-                            child: Image.asset(
-                              'assets/images/li22301254_quantized.png',
-                              width: 100.0,
-                              height: 100.0,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              10.0, 0.0, 0.0, 0.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Lorem Ipsum Book',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontSize: 16.0,
-                                    ),
-                              ),
-                              Text(
-                                'By Lorep Ipsum',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  RatingBar.builder(
-                                    onRatingUpdate: (newValue) => setState(() =>
-                                        _model.ratingBarValue2 = newValue),
-                                    itemBuilder: (context, index) => Icon(
-                                      Icons.star_rounded,
-                                      color:
-                                          FlutterFlowTheme.of(context).tertiary,
-                                    ),
-                                    direction: Axis.horizontal,
-                                    initialRating: _model.ratingBarValue2 ??=
-                                        5.0,
-                                    unratedColor: Color(0xFF9E9E9E),
-                                    itemCount: 5,
-                                    itemSize: 10.0,
-                                    glowColor:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        5.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      '5.0',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Plus Jakarta Sans',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            fontSize: 12.0,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 30.0,
-                            borderWidth: 1.0,
-                            buttonSize: 30.0,
-                            icon: FaIcon(
-                              FontAwesomeIcons.bookmark,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20.0,
-                            ),
-                            onPressed: () {
-                              print('IconButton pressed ...');
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 100.0,
-                            height: 130.0,
-                            decoration: BoxDecoration(
-                              color: Color(0x67F0C0C0),
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            alignment: AlignmentDirectional(0.0, 0.0),
-                            child: Image.asset(
-                              'assets/images/li22301254_quantized.png',
-                              width: 100.0,
-                              height: 100.0,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              10.0, 0.0, 0.0, 0.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Lorem Ipsum Book',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontSize: 16.0,
-                                    ),
-                              ),
-                              Text(
-                                'By Lorep Ipsum',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  RatingBar.builder(
-                                    onRatingUpdate: (newValue) => setState(() =>
-                                        _model.ratingBarValue3 = newValue),
-                                    itemBuilder: (context, index) => Icon(
-                                      Icons.star_rounded,
-                                      color:
-                                          FlutterFlowTheme.of(context).tertiary,
-                                    ),
-                                    direction: Axis.horizontal,
-                                    initialRating: _model.ratingBarValue3 ??=
-                                        5.0,
-                                    unratedColor: Color(0xFF9E9E9E),
-                                    itemCount: 5,
-                                    itemSize: 10.0,
-                                    glowColor:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        5.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      '5.0',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Plus Jakarta Sans',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            fontSize: 12.0,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 30.0,
-                            borderWidth: 1.0,
-                            buttonSize: 30.0,
-                            icon: FaIcon(
-                              FontAwesomeIcons.bookmark,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20.0,
-                            ),
-                            onPressed: () {
-                              print('IconButton pressed ...');
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 100.0,
-                            height: 130.0,
-                            decoration: BoxDecoration(
-                              color: Color(0x67F0C0C0),
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            alignment: AlignmentDirectional(0.0, 0.0),
-                            child: Image.asset(
-                              'assets/images/li22301254_quantized.png',
-                              width: 100.0,
-                              height: 100.0,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              10.0, 0.0, 0.0, 0.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Lorem Ipsum Book',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontSize: 16.0,
-                                    ),
-                              ),
-                              Text(
-                                'By Lorep Ipsum',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  RatingBar.builder(
-                                    onRatingUpdate: (newValue) => setState(() =>
-                                        _model.ratingBarValue4 = newValue),
-                                    itemBuilder: (context, index) => Icon(
-                                      Icons.star_rounded,
-                                      color:
-                                          FlutterFlowTheme.of(context).tertiary,
-                                    ),
-                                    direction: Axis.horizontal,
-                                    initialRating: _model.ratingBarValue4 ??=
+                                    initialRating: _model.ratingBarValue ??=
                                         5.0,
                                     unratedColor: Color(0xFF9E9E9E),
                                     itemCount: 5,

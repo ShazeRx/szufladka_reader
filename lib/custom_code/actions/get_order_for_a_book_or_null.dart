@@ -24,9 +24,10 @@ Future<DocumentReference?> getOrderForABookOrNull(
   final query = ordersRef
       .where("user", isEqualTo: userRef)
       .where("book", isEqualTo: book)
-      .where("status", isEqualTo: OrderStatus.Pending)
-      .where("status", isEqualTo: OrderStatus.Completed)
-      .limit(1);
+      .where("status", whereIn: [
+    OrderStatus.Pending.name,
+    OrderStatus.Completed.name
+  ]).limit(1);
 
   final snapshot = await query.get();
 

@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -121,15 +120,6 @@ class _Auth1WidgetState extends State<Auth1Widget>
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -223,7 +213,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                           });
                                         },
                                         child: Text(
-                                          'Sign In',
+                                          'Logowanie',
                                           style: FlutterFlowTheme.of(context)
                                               .displaySmall
                                               .override(
@@ -231,7 +221,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                 color: _model.isSignIn == false
                                                     ? Color(0xFF101213)
                                                     : Color(0xFF57636C),
-                                                fontSize: 36.0,
+                                                fontSize: 24.0,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                         ),
@@ -251,7 +241,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                           });
                                         },
                                         child: Text(
-                                          'Sign Up',
+                                          'Rejestracja',
                                           style: FlutterFlowTheme.of(context)
                                               .displaySmall
                                               .override(
@@ -259,7 +249,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                 color: _model.isSignIn == true
                                                     ? Color(0xFF101213)
                                                     : Color(0xFF57636C),
-                                                fontSize: 36.0,
+                                                fontSize: 24.0,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                         ),
@@ -271,7 +261,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       32.0, 12.0, 0.0, 24.0),
                                   child: Text(
-                                    'Let\'s get started by filling out the form below.',
+                                    'Zacznij od wypełnienia formularza poniżej',
                                     style: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -404,7 +394,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                 obscureText:
                                                     !_model.passwordVisibility,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Password',
+                                                  labelText: 'Hasło',
                                                   labelStyle: FlutterFlowTheme
                                                           .of(context)
                                                       .labelMedium
@@ -546,7 +536,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
 
                                                   setState(() {});
                                                 },
-                                                text: 'Sign In',
+                                                text: 'Zaloguj się',
                                                 options: FFButtonOptions(
                                                   width: 230.0,
                                                   height: 52.0,
@@ -557,7 +547,9 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                       EdgeInsetsDirectional
                                                           .fromSTEB(0.0, 0.0,
                                                               0.0, 0.0),
-                                                  color: Color(0xFF4B39EF),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primary,
                                                   textStyle:
                                                       FlutterFlowTheme.of(
                                                               context)
@@ -582,53 +574,6 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                               ),
                                             ),
                                           ),
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 0.0, 0.0, 16.0),
-                                              child: FFButtonWidget(
-                                                onPressed: () {
-                                                  print('Button pressed ...');
-                                                },
-                                                text: 'Forgot Password',
-                                                options: FFButtonOptions(
-                                                  width: 230.0,
-                                                  height: 44.0,
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 0.0, 0.0),
-                                                  iconPadding:
-                                                      EdgeInsetsDirectional
-                                                          .fromSTEB(0.0, 0.0,
-                                                              0.0, 0.0),
-                                                  color: Colors.white,
-                                                  textStyle: FlutterFlowTheme
-                                                          .of(context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Plus Jakarta Sans',
-                                                        color:
-                                                            Color(0xFF101213),
-                                                        fontSize: 14.0,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                  elevation: 0.0,
-                                                  borderSide: BorderSide(
-                                                    color: Colors.white,
-                                                    width: 2.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
                                           Column(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
@@ -640,7 +585,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                       .fromSTEB(16.0, 0.0, 16.0,
                                                           24.0),
                                                   child: Text(
-                                                    'Or sign up with',
+                                                    'Lub zaloguj się za pomocą',
                                                     textAlign: TextAlign.center,
                                                     style: FlutterFlowTheme.of(
                                                             context)
@@ -700,7 +645,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                             }
                                                           },
                                                           text:
-                                                              'Continue with Google',
+                                                              'Kontynuuj z Google',
                                                           icon: FaIcon(
                                                             FontAwesomeIcons
                                                                 .google,
@@ -783,7 +728,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                                   }
                                                                 },
                                                                 text:
-                                                                    'Continue with Apple',
+                                                                    'Kontynuuj z Apple',
                                                                 icon: FaIcon(
                                                                   FontAwesomeIcons
                                                                       .apple,
@@ -970,7 +915,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                 obscureText: !_model
                                                     .passwordCreateVisibility,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Password',
+                                                  labelText: 'Hasło',
                                                   labelStyle: FlutterFlowTheme
                                                           .of(context)
                                                       .bodySmall
@@ -1082,7 +1027,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                 obscureText: !_model
                                                     .passwordConfirmVisibility,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Confirm Password',
+                                                  labelText: 'Potwierdź hasło',
                                                   labelStyle: FlutterFlowTheme
                                                           .of(context)
                                                       .bodySmall
@@ -1228,7 +1173,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                         isAdmin: false,
                                                       ));
                                                 },
-                                                text: 'Create Account',
+                                                text: 'Utwórz konto',
                                                 options: FFButtonOptions(
                                                   width: 230.0,
                                                   height: 52.0,
@@ -1336,7 +1281,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                             }
                                                           },
                                                           text:
-                                                              'Continue with Google',
+                                                              'Zaloguj za pomocą Google',
                                                           icon: FaIcon(
                                                             FontAwesomeIcons
                                                                 .google,
@@ -1419,7 +1364,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                                   }
                                                                 },
                                                                 text:
-                                                                    'Continue with Apple',
+                                                                    'Zaloguj za pomocą Apple',
                                                                 icon: FaIcon(
                                                                   FontAwesomeIcons
                                                                       .apple,

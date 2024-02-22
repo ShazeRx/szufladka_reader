@@ -1,7 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'loaned_book_card_model.dart';
@@ -63,50 +62,61 @@ class _LoanedBookCardWidgetState extends State<LoanedBookCardWidget> {
             fit: BoxFit.cover,
           ),
         ),
-        Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                valueOrDefault<String>(
-                  widget.title,
-                  'title',
-                ),
-                style: FlutterFlowTheme.of(context).bodyLarge,
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 0.0),
-                child: Text(
-                  valueOrDefault<String>(
-                    widget.author,
-                    'author',
+        Flexible(
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: Text(
+                    valueOrDefault<String>(
+                      widget.title,
+                      'title',
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyLarge.override(
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontSize: 14.0,
+                        ),
                   ),
-                  style: FlutterFlowTheme.of(context).bodyMedium,
                 ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
-                child: Text(
-                  'Zwrot do${dateTimeFormat('d/M/y', widget.endDate)}',
-                  style: FlutterFlowTheme.of(context).bodyMedium,
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 0.0),
+                  child: Text(
+                    valueOrDefault<String>(
+                      widget.author,
+                      'author',
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                child: Text(
-                  widget.canBeRenewed!
-                      ? 'Możliwe przedłużenie'
-                      : 'Przedłużenie niedostępne',
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Plus Jakarta Sans',
-                        color: FlutterFlowTheme.of(context).secondary,
-                      ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                  child: Text(
+                    'Zwrot do ${dateTimeFormat(
+                      'd/M/y',
+                      widget.endDate,
+                      locale: FFLocalizations.of(context).languageCode,
+                    )}',
+                    style: FlutterFlowTheme.of(context).bodyMedium,
+                  ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  child: Text(
+                    widget.canBeRenewed!
+                        ? 'Możliwe przedłużenie'
+                        : 'Przedłużenie niedostępne',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Plus Jakarta Sans',
+                          color: FlutterFlowTheme.of(context).secondary,
+                        ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],

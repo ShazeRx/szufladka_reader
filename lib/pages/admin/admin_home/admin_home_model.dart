@@ -1,15 +1,15 @@
-import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/random_data_util.dart' as random_data;
-import 'list06_user_search_widget.dart' show List06UserSearchWidget;
-import 'package:easy_debounce/easy_debounce.dart';
+import 'admin_home_widget.dart' show AdminHomeWidget;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class List06UserSearchModel extends FlutterFlowModel<List06UserSearchWidget> {
+class AdminHomeModel extends FlutterFlowModel<AdminHomeWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -17,6 +17,10 @@ class List06UserSearchModel extends FlutterFlowModel<List06UserSearchWidget> {
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
+  // State field(s) for TabBar widget.
+  TabController? tabBarController;
+  int get tabBarCurrentIndex =>
+      tabBarController != null ? tabBarController!.index : 0;
 
   /// Initialization and disposal methods.
 
@@ -28,6 +32,8 @@ class List06UserSearchModel extends FlutterFlowModel<List06UserSearchWidget> {
     unfocusNode.dispose();
     textFieldFocusNode?.dispose();
     textController?.dispose();
+
+    tabBarController?.dispose();
   }
 
   /// Action blocks are added here.

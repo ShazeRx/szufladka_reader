@@ -1,7 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'book_card_model.dart';
@@ -58,7 +57,7 @@ class _BookCardWidgetState extends State<BookCardWidget> {
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
-                'https://picsum.photos/seed/912/600',
+                widget.image!,
                 width: 100.0,
                 height: 150.0,
                 fit: BoxFit.cover,
@@ -66,20 +65,24 @@ class _BookCardWidgetState extends State<BookCardWidget> {
             ),
           ],
         ),
-        Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                valueOrDefault<String>(
-                  widget.title,
-                  'title',
+        Expanded(
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: Text(
+                    valueOrDefault<String>(
+                      widget.title,
+                      'title',
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyLarge,
+                  ),
                 ),
-                style: FlutterFlowTheme.of(context).bodyLarge,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         Row(

@@ -13,3 +13,4 @@ export '/home678/home678_widget.dart' show Home678Widget;
 export '/pages/profile_page/profile_page_widget.dart' show ProfilePageWidget;
 export '/list06_user_search/list06_user_search_widget.dart'
     show List06UserSearchWidget;
+export '/pages/admin/admin_home/admin_home_widget.dart' show AdminHomeWidget;

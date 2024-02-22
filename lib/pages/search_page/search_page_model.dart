@@ -4,7 +4,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'search_page_widget.dart' show SearchPageWidget;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,13 +18,7 @@ class SearchPageModel extends FlutterFlowModel<SearchPageWidget> {
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
   // State field(s) for RatingBar widget.
-  double? ratingBarValue1;
-  // State field(s) for RatingBar widget.
-  double? ratingBarValue2;
-  // State field(s) for RatingBar widget.
-  double? ratingBarValue3;
-  // State field(s) for RatingBar widget.
-  double? ratingBarValue4;
+  double? ratingBarValue;
 
   /// Initialization and disposal methods.
 
