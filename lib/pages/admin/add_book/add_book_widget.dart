@@ -426,7 +426,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                           ),
                                           style: FlutterFlowTheme.of(context)
                                               .bodyLarge,
-                                          minLines: 5,
+                                          minLines: 1,
                                           cursorColor:
                                               FlutterFlowTheme.of(context)
                                                   .primary,
@@ -530,15 +530,12 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                               chipSpacing: 8.0,
                                               rowSpacing: 8.0,
                                               multiselect: false,
-                                              initialized:
-                                                  _model.choiceChipsValue1 !=
-                                                      null,
                                               alignment: WrapAlignment.start,
                                               controller: _model
                                                       .choiceChipsValueController1 ??=
                                                   FormFieldController<
                                                       List<String>>(
-                                                ['Tops'],
+                                                [],
                                               ),
                                               wrapped: true,
                                             ),
@@ -630,7 +627,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                                       .choiceChipsValueController2 ??=
                                                   FormFieldController<
                                                       List<String>>(
-                                                ['Tops'],
+                                                ['Polski'],
                                               ),
                                               wrapped: true,
                                             ),
