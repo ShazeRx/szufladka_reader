@@ -161,6 +161,31 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'adminHome',
               path: 'adminHome',
               builder: (context, params) => AdminHomeWidget(),
+            ),
+            FFRoute(
+              name: 'ReaderInfo',
+              path: 'readerInfo',
+              builder: (context, params) => ReaderInfoWidget(),
+            ),
+            FFRoute(
+              name: 'AdminBookDetailsPage',
+              path: 'adminBookDetailsPage',
+              asyncParams: {
+                'book': getDoc(['books'], BooksRecord.fromSnapshot),
+              },
+              builder: (context, params) => AdminBookDetailsPageWidget(
+                book: params.getParam('book', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'AdminSearchPage',
+              path: 'adminSearchPage',
+              builder: (context, params) => AdminSearchPageWidget(),
+            ),
+            FFRoute(
+              name: 'AddBook',
+              path: 'addBook',
+              builder: (context, params) => AddBookWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),

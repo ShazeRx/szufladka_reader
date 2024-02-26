@@ -14,3 +14,9 @@ export '/pages/profile_page/profile_page_widget.dart' show ProfilePageWidget;
 export '/list06_user_search/list06_user_search_widget.dart'
     show List06UserSearchWidget;
 export '/pages/admin/admin_home/admin_home_widget.dart' show AdminHomeWidget;
+export '/pages/admin/reader_info/reader_info_widget.dart' show ReaderInfoWidget;
+export '/pages/admin/admin_book_details_page/admin_book_details_page_widget.dart'
+    show AdminBookDetailsPageWidget;
+export '/pages/admin/admin_search_page/admin_search_page_widget.dart'
+    show AdminSearchPageWidget;
+export '/pages/admin/add_book/add_book_widget.dart' show AddBookWidget;
