@@ -194,17 +194,37 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                 return Container(
                                   height: 200.0,
                                   decoration: BoxDecoration(),
-                                  child: wrapWithModel(
-                                    model: _model.bookListViewModels.getModel(
-                                      searchedBooksIndex.toString(),
-                                      searchedBooksIndex,
-                                    ),
-                                    updateCallback: () => setState(() {}),
-                                    child: BookListViewWidget(
-                                      key: Key(
-                                        'Keyiy5_${searchedBooksIndex.toString()}',
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                        'BookDetailsPage',
+                                        queryParameters: {
+                                          'book': serializeParam(
+                                            searchedBooksItem,
+                                            ParamType.Document,
+                                          ),
+                                        }.withoutNulls,
+                                        extra: <String, dynamic>{
+                                          'book': searchedBooksItem,
+                                        },
+                                      );
+                                    },
+                                    child: wrapWithModel(
+                                      model: _model.bookListViewModels.getModel(
+                                        searchedBooksIndex.toString(),
+                                        searchedBooksIndex,
                                       ),
-                                      book: searchedBooksItem,
+                                      updateCallback: () => setState(() {}),
+                                      child: BookListViewWidget(
+                                        key: Key(
+                                          'Keyiy5_${searchedBooksIndex.toString()}',
+                                        ),
+                                        book: searchedBooksItem,
+                                      ),
                                     ),
                                   ),
                                 );
