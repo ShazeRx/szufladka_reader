@@ -206,7 +206,7 @@ class _AdminSearchPageWidgetState extends State<AdminSearchPageWidget> {
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   context.pushNamed(
-                                    'BookDetailsPage',
+                                    'AdminBookDetailsPage',
                                     queryParameters: {
                                       'book': serializeParam(
                                         searchedBooksItem,
