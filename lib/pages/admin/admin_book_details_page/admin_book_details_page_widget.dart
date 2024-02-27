@@ -1,17 +1,13 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/enums/enums.dart';
 import '/components/base_button/base_button_widget.dart';
 import '/components/book_cancelation_order_sheet/book_cancelation_order_sheet_widget.dart';
 import '/components/book_info_part/book_info_part_widget.dart';
-import '/components/book_reservartion_bottom_sheet/book_reservartion_bottom_sheet_widget.dart';
-import '/components/icon_info_row/icon_info_row_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -375,390 +371,141 @@ class _AdminBookDetailsPageWidgetState
                     ),
                   ],
                 ),
-                Row(
+                Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Expanded(
-                      child: Builder(
-                        builder: (context) {
-                          if (_model.order != null) {
-                            return Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Builder(
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: wrapWithModel(
+                            model: _model.baseButtonModel1,
+                            updateCallback: () => setState(() {}),
+                            child: BaseButtonWidget(
+                              text: 'Edytuj książkę',
+                              disabled: false,
+                              action: () async {
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  enableDrag: false,
+                                  context: context,
                                   builder: (context) {
-                                    if (functions.getProlongateBookOptions(
-                                            _model.order!) ==
-                                        BookProlongateOptions.TimedOut) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: wrapWithModel(
-                                                  model:
-                                                      _model.baseButtonModel1,
-                                                  updateCallback: () =>
-                                                      setState(() {}),
-                                                  child: BaseButtonWidget(
-                                                    text:
-                                                        'Prolongata niemożliwa',
-                                                    disabled: true,
-                                                    action: () async {},
-                                                  ),
+                                    return GestureDetector(
+                                      onTap: () => _model
+                                              .unfocusNode.canRequestFocus
+                                          ? FocusScope.of(context)
+                                              .requestFocus(_model.unfocusNode)
+                                          : FocusScope.of(context).unfocus(),
+                                      child: Padding(
+                                        padding:
+                                            MediaQuery.viewInsetsOf(context),
+                                        child: BookCancelationOrderSheetWidget(
+                                          order: _model.order!,
+                                          book: widget.book!,
+                                          callback: () async {
+                                            setState(() {
+                                              _model.order = null;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).then((value) => safeSetState(() {}));
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                var confirmDialogResponse =
+                                    await showDialog<bool>(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: Text('Usuwanie pozycji'),
+                                              content: Text(
+                                                  'Czy napewno usunąć podaną pozycję?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          false),
+                                                  child: Text('Anuluj'),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          wrapWithModel(
-                                            model: _model.iconInfoRowModel1,
-                                            updateCallback: () =>
-                                                setState(() {}),
-                                            child: IconInfoRowWidget(
-                                              text:
-                                                  'Termin oddania minął. Prosimy o jak najszybszy zwrot książki',
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    } else if (functions
-                                            .getProlongateBookOptions(
-                                                _model.order!) ==
-                                        BookProlongateOptions
-                                            .NoProlongationsLeft) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: wrapWithModel(
-                                                  model:
-                                                      _model.baseButtonModel2,
-                                                  updateCallback: () =>
-                                                      setState(() {}),
-                                                  child: BaseButtonWidget(
-                                                    text:
-                                                        'Prolongata niemożliwa',
-                                                    disabled: true,
-                                                    action: () async {},
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          wrapWithModel(
-                                            model: _model.iconInfoRowModel2,
-                                            updateCallback: () =>
-                                                setState(() {}),
-                                            child: IconInfoRowWidget(
-                                              text:
-                                                  'Wykorzystano maksymalną liczbę prolongat: 3',
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    } else if (functions
-                                            .getProlongateBookOptions(
-                                                _model.order!) ==
-                                        BookProlongateOptions
-                                            .TooEarlyToProlong) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: wrapWithModel(
-                                                  model:
-                                                      _model.baseButtonModel3,
-                                                  updateCallback: () =>
-                                                      setState(() {}),
-                                                  child: BaseButtonWidget(
-                                                    text:
-                                                        'Prolongata niemożliwa',
-                                                    disabled: true,
-                                                    action: () async {},
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          wrapWithModel(
-                                            model: _model.iconInfoRowModel3,
-                                            updateCallback: () =>
-                                                setState(() {}),
-                                            child: IconInfoRowWidget(
-                                              text:
-                                                  'Przedłużenie możliwe na 3 dni przed końcem terminu oddania.',
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    } else if (functions
-                                            .getProlongateBookOptions(
-                                                _model.order!) ==
-                                        BookProlongateOptions
-                                            .OrderInPendingStatus) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: wrapWithModel(
-                                                  model:
-                                                      _model.baseButtonModel4,
-                                                  updateCallback: () =>
-                                                      setState(() {}),
-                                                  child: BaseButtonWidget(
-                                                    text: 'Edytuj książkę',
-                                                    disabled: false,
-                                                    action: () async {
-                                                      await showModalBottomSheet(
-                                                        isScrollControlled:
-                                                            true,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        enableDrag: false,
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return GestureDetector(
-                                                            onTap: () => _model
-                                                                    .unfocusNode
-                                                                    .canRequestFocus
-                                                                ? FocusScope.of(
-                                                                        context)
-                                                                    .requestFocus(
-                                                                        _model
-                                                                            .unfocusNode)
-                                                                : FocusScope.of(
-                                                                        context)
-                                                                    .unfocus(),
-                                                            child: Padding(
-                                                              padding: MediaQuery
-                                                                  .viewInsetsOf(
-                                                                      context),
-                                                              child:
-                                                                  BookCancelationOrderSheetWidget(
-                                                                order: _model
-                                                                    .order!,
-                                                                book: widget
-                                                                    .book!,
-                                                                callback:
-                                                                    () async {
-                                                                  setState(() {
-                                                                    _model.order =
-                                                                        null;
-                                                                  });
-                                                                },
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      ).then((value) =>
-                                                          safeSetState(() {}));
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 0.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Expanded(
-                                                  child: InkWell(
-                                                    splashColor:
-                                                        Colors.transparent,
-                                                    focusColor:
-                                                        Colors.transparent,
-                                                    hoverColor:
-                                                        Colors.transparent,
-                                                    highlightColor:
-                                                        Colors.transparent,
-                                                    onTap: () async {
-                                                      var confirmDialogResponse =
-                                                          await showDialog<
-                                                                  bool>(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (alertDialogContext) {
-                                                                  return AlertDialog(
-                                                                    title: Text(
-                                                                        'Usuwanie pozycji'),
-                                                                    content: Text(
-                                                                        'Czy napewno usunąć podaną pozycję?'),
-                                                                    actions: [
-                                                                      TextButton(
-                                                                        onPressed: () => Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            false),
-                                                                        child: Text(
-                                                                            'Anuluj'),
-                                                                      ),
-                                                                      TextButton(
-                                                                        onPressed: () => Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            true),
-                                                                        child: Text(
-                                                                            'Potwierdź'),
-                                                                      ),
-                                                                    ],
-                                                                  );
-                                                                },
-                                                              ) ??
-                                                              false;
-                                                      await widget
-                                                          .book!.reference
-                                                          .delete();
-                                                    },
-                                                    child: wrapWithModel(
-                                                      model: _model
-                                                          .baseButtonModel5,
-                                                      updateCallback: () =>
-                                                          setState(() {}),
-                                                      child: BaseButtonWidget(
-                                                        text: 'Usuń książkę',
-                                                        disabled: false,
-                                                        action: () async {
-                                                          await showModalBottomSheet(
-                                                            isScrollControlled:
-                                                                true,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            enableDrag: false,
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return GestureDetector(
-                                                                onTap: () => _model
-                                                                        .unfocusNode
-                                                                        .canRequestFocus
-                                                                    ? FocusScope.of(
-                                                                            context)
-                                                                        .requestFocus(_model
-                                                                            .unfocusNode)
-                                                                    : FocusScope.of(
-                                                                            context)
-                                                                        .unfocus(),
-                                                                child: Padding(
-                                                                  padding: MediaQuery
-                                                                      .viewInsetsOf(
-                                                                          context),
-                                                                  child:
-                                                                      BookCancelationOrderSheetWidget(
-                                                                    order: _model
-                                                                        .order!,
-                                                                    book: widget
-                                                                        .book!,
-                                                                    callback:
-                                                                        () async {
-                                                                      setState(
-                                                                          () {
-                                                                        _model.order =
-                                                                            null;
-                                                                      });
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
-                                                          ).then((value) =>
-                                                              safeSetState(
-                                                                  () {}));
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          true),
+                                                  child: Text('Potwierdź'),
                                                 ),
                                               ],
+                                            );
+                                          },
+                                        ) ??
+                                        false;
+                                await widget.book!.reference.delete();
+                              },
+                              child: wrapWithModel(
+                                model: _model.baseButtonModel2,
+                                updateCallback: () => setState(() {}),
+                                child: BaseButtonWidget(
+                                  text: 'Usuń książkę',
+                                  disabled: false,
+                                  action: () async {
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      enableDrag: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () => _model
+                                                  .unfocusNode.canRequestFocus
+                                              ? FocusScope.of(context)
+                                                  .requestFocus(
+                                                      _model.unfocusNode)
+                                              : FocusScope.of(context)
+                                                  .unfocus(),
+                                          child: Padding(
+                                            padding: MediaQuery.viewInsetsOf(
+                                                context),
+                                            child:
+                                                BookCancelationOrderSheetWidget(
+                                              order: _model.order!,
+                                              book: widget.book!,
+                                              callback: () async {
+                                                setState(() {
+                                                  _model.order = null;
+                                                });
+                                              },
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    } else {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: wrapWithModel(
-                                                  model:
-                                                      _model.baseButtonModel6,
-                                                  updateCallback: () =>
-                                                      setState(() {}),
-                                                  child: BaseButtonWidget(
-                                                    text: 'Prolonguj',
-                                                    disabled: false,
-                                                    action: () async {},
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      );
-                                    }
+                                        );
+                                      },
+                                    ).then((value) => safeSetState(() {}));
                                   },
                                 ),
-                              ],
-                            );
-                          } else {
-                            return wrapWithModel(
-                              model: _model.baseButtonModel7,
-                              updateCallback: () => setState(() {}),
-                              child: BaseButtonWidget(
-                                text: 'Wypożycz',
-                                disabled: false,
-                                action: () async {
-                                  await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    enableDrag: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return GestureDetector(
-                                        onTap: () => _model
-                                                .unfocusNode.canRequestFocus
-                                            ? FocusScope.of(context)
-                                                .requestFocus(
-                                                    _model.unfocusNode)
-                                            : FocusScope.of(context).unfocus(),
-                                        child: Padding(
-                                          padding:
-                                              MediaQuery.viewInsetsOf(context),
-                                          child:
-                                              BookReservartionBottomSheetWidget(
-                                            book: widget.book!,
-                                            callback: (order) async {
-                                              setState(() {
-                                                _model.order = order;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ).then((value) => safeSetState(() {}));
-                                },
                               ),
-                            );
-                          }
-                        },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
