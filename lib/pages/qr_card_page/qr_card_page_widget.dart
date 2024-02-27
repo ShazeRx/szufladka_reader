@@ -1,7 +1,9 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -57,8 +59,8 @@ class _QrCardPageWidgetState extends State<QrCardPageWidget> {
                 color: FlutterFlowTheme.of(context).primaryText,
                 size: 30.0,
               ),
-              onPressed: () {
-                print('IconButton pressed ...');
+              onPressed: () async {
+                context.safePop();
               },
             ),
           ),
@@ -80,7 +82,7 @@ class _QrCardPageWidgetState extends State<QrCardPageWidget> {
                     width: 250.0,
                     height: 250.0,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).tertiary,
+                      color: FlutterFlowTheme.of(context).primaryBackground,
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 4.0,
@@ -90,13 +92,20 @@ class _QrCardPageWidgetState extends State<QrCardPageWidget> {
                       ],
                       borderRadius: BorderRadius.circular(25.0),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(25.0),
-                      child: Image.asset(
-                        'assets/images/frame.png',
-                        width: 200.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: BarcodeWidget(
+                        data: currentUserUid,
+                        barcode: Barcode.qrCode(),
+                        width: 300.0,
+                        height: 90.0,
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        backgroundColor: Colors.transparent,
+                        errorBuilder: (_context, _error) => SizedBox(
+                          width: 300.0,
+                          height: 90.0,
+                        ),
+                        drawText: false,
                       ),
                     ),
                   ),
@@ -111,12 +120,14 @@ class _QrCardPageWidgetState extends State<QrCardPageWidget> {
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                child: Text(
-                  '@990642312048',
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Plus Jakarta Sans',
-                        fontWeight: FontWeight.w300,
-                      ),
+                child: AuthUserStreamWidget(
+                  builder: (context) => Text(
+                    '@${valueOrDefault(currentUserDocument?.readerCode, '')}',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontWeight: FontWeight.w300,
+                        ),
+                  ),
                 ),
               ),
             ],

@@ -46,6 +46,7 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInStatuses(
     orderedBooks.add(OrderedBookStruct(
         book: bookRef,
         endDate: order.endDate,
+        status: order.status,
         canBeProlonged: order.prolongations < 3));
   }
 

@@ -141,21 +141,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   : HomeWidget(),
             ),
             FFRoute(
-              name: 'home678',
-              path: 'home678',
-              builder: (context, params) => Home678Widget(),
-            ),
-            FFRoute(
               name: 'ProfilePage',
               path: 'profilePage',
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'ProfilePage')
                   : ProfilePageWidget(),
-            ),
-            FFRoute(
-              name: 'List06UserSearch',
-              path: 'list06UserSearch',
-              builder: (context, params) => List06UserSearchWidget(),
             ),
             FFRoute(
               name: 'adminHome',
@@ -165,7 +155,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'ReaderInfo',
               path: 'readerInfo',
-              builder: (context, params) => ReaderInfoWidget(),
+              builder: (context, params) => ReaderInfoWidget(
+                userDocRef: params.getParam('userDocRef',
+                    ParamType.DocumentReference, false, ['users']),
+              ),
             ),
             FFRoute(
               name: 'AdminBookDetailsPage',

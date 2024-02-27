@@ -527,7 +527,7 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                   if (_model.user?.isAdmin ==
                                                       true) {
                                                     context.pushNamedAuth(
-                                                        'Onboarding',
+                                                        'adminHome',
                                                         context.mounted);
                                                   } else {
                                                     context.goNamedAuth('home',
@@ -1172,6 +1172,9 @@ class _Auth1WidgetState extends State<Auth1Widget>
                                                           createUsersRecordData(
                                                         isAdmin: false,
                                                       ));
+
+                                                  context.goNamedAuth(
+                                                      'home', context.mounted);
                                                 },
                                                 text: 'Utwórz konto',
                                                 options: FFButtonOptions(

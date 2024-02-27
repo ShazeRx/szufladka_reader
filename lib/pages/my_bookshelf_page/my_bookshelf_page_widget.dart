@@ -1,10 +1,14 @@
+import '/backend/backend.dart';
+import '/backend/schema/enums/enums.dart';
+import '/backend/schema/structs/index.dart';
+import '/components/book_list_view/book_list_view_widget.dart';
 import '/components/loaned_book_card/loaned_book_card_widget.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/random_data_util.dart' as random_data;
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +31,21 @@ class _MyBookshelfPageWidgetState extends State<MyBookshelfPageWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => MyBookshelfPageModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.actionLoanedBooks = await actions.fetchOrderedBooksInStatuses(
+        OrderStatus.values
+            .where((e) =>
+                (e == OrderStatus.Completed) || (e == OrderStatus.Archived))
+            .toList()
+            .toList(),
+      );
+      setState(() {
+        _model.userOrders =
+            _model.actionLoanedBooks!.toList().cast<OrderedBookStruct>();
+      });
+    });
   }
 
   @override
@@ -77,28 +96,88 @@ class _MyBookshelfPageWidgetState extends State<MyBookshelfPageWidget> {
                     width: double.infinity,
                     height: 200.0,
                     decoration: BoxDecoration(),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Container(
-                          width: 353.0,
-                          decoration: BoxDecoration(),
-                          child: wrapWithModel(
-                            model: _model.loanedBookCardModel,
-                            updateCallback: () => setState(() {}),
-                            child: LoanedBookCardWidget(
-                              title: 'Wiedźmin: Miecz Przeznaczenia',
-                              author: 'Andrzej Sapkowski',
-                              image:
-                                  'https://s.lubimyczytac.pl/upload/books/240000/240310/1114358-352x500.jpg',
-                              canBeRenewed: false,
-                              endDate: random_data.randomDate(),
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: Builder(
+                      builder: (context) {
+                        final loanedBooks = _model.userOrders.toList();
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: loanedBooks.length,
+                          itemBuilder: (context, loanedBooksIndex) {
+                            final loanedBooksItem =
+                                loanedBooks[loanedBooksIndex];
+                            return Container(
+                              width: 353.0,
+                              decoration: BoxDecoration(),
+                              child: FutureBuilder<BooksRecord>(
+                                future: BooksRecord.getDocumentOnce(
+                                    loanedBooksItem.book!),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  final loanedBookCardBooksRecord =
+                                      snapshot.data!;
+                                  return InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                        'BookDetailsPage',
+                                        queryParameters: {
+                                          'book': serializeParam(
+                                            loanedBookCardBooksRecord,
+                                            ParamType.Document,
+                                          ),
+                                        }.withoutNulls,
+                                        extra: <String, dynamic>{
+                                          'book': loanedBookCardBooksRecord,
+                                        },
+                                      );
+                                    },
+                                    child: wrapWithModel(
+                                      model:
+                                          _model.loanedBookCardModels.getModel(
+                                        loanedBooksIndex.toString(),
+                                        loanedBooksIndex,
+                                      ),
+                                      updateCallback: () => setState(() {}),
+                                      child: LoanedBookCardWidget(
+                                        key: Key(
+                                          'Key5s6_${loanedBooksIndex.toString()}',
+                                        ),
+                                        title: loanedBookCardBooksRecord.title,
+                                        author:
+                                            loanedBookCardBooksRecord.author,
+                                        image: loanedBookCardBooksRecord.photo,
+                                        canBeRenewed:
+                                            loanedBooksItem.canBeProlonged,
+                                        endDate: loanedBooksItem.endDate!,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                   Column(
@@ -118,122 +197,90 @@ class _MyBookshelfPageWidgetState extends State<MyBookshelfPageWidget> {
                               'Poprzednie wypożyczenia',
                               style: FlutterFlowTheme.of(context).titleMedium,
                             ),
-                            Text(
-                              'Pokaż wszystko',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Plus Jakarta Sans',
-                                    color: FlutterFlowTheme.of(context).primary,
-                                  ),
-                            ),
                           ],
                         ),
                       ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 20.0, 0.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      child: Image.network(
-                                        'https://s.lubimyczytac.pl/upload/books/240000/240310/1114358-352x500.jpg',
-                                        width: 100.0,
-                                        height: 140.0,
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 10.0, 0.0, 0.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Text(
-                                                    'Wiedźmin: \nOstatnie Życzenie',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          fontSize: 14.0,
-                                                        ),
-                                                  ),
-                                                ],
+                      Container(
+                        width: double.infinity,
+                        height: 200.0,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                        ),
+                        child: Builder(
+                          builder: (context) {
+                            final pastLoans = _model.userOrders
+                                .where((e) => e.status == OrderStatus.Archived)
+                                .toList();
+                            return ListView.builder(
+                              padding: EdgeInsets.zero,
+                              scrollDirection: Axis.vertical,
+                              itemCount: pastLoans.length,
+                              itemBuilder: (context, pastLoansIndex) {
+                                final pastLoansItem = pastLoans[pastLoansIndex];
+                                return Container(
+                                  height: 200.0,
+                                  child: StreamBuilder<BooksRecord>(
+                                    stream: BooksRecord.getDocument(
+                                        pastLoansItem.book!),
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
                                               ),
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Text(
-                                                    'Andrzej Sapkowski ',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodySmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          fontSize: 12.0,
-                                                          fontWeight:
-                                                              FontWeight.w300,
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                          Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              FlutterFlowIconButton(
-                                                borderColor: Colors.transparent,
-                                                borderRadius: 30.0,
-                                                borderWidth: 1.0,
-                                                buttonSize: 30.0,
-                                                icon: FaIcon(
-                                                  FontAwesomeIcons.bookmark,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
-                                                  size: 20.0,
-                                                ),
-                                                onPressed: () {
-                                                  print(
-                                                      'IconButton pressed ...');
-                                                },
+                                        );
+                                      }
+                                      final bookListViewBooksRecord =
+                                          snapshot.data!;
+                                      return InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          context.pushNamed(
+                                            'BookDetailsPage',
+                                            queryParameters: {
+                                              'book': serializeParam(
+                                                bookListViewBooksRecord,
+                                                ParamType.Document,
                                               ),
-                                            ],
+                                            }.withoutNulls,
+                                            extra: <String, dynamic>{
+                                              'book': bookListViewBooksRecord,
+                                            },
+                                          );
+                                        },
+                                        child: wrapWithModel(
+                                          model: _model.bookListViewModels
+                                              .getModel(
+                                            pastLoansIndex.toString(),
+                                            pastLoansIndex,
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
+                                          updateCallback: () => setState(() {}),
+                                          child: BookListViewWidget(
+                                            key: Key(
+                                              'Keynng_${pastLoansIndex.toString()}',
+                                            ),
+                                            book: bookListViewBooksRecord,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
                     ],

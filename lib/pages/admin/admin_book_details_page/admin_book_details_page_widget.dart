@@ -1,11 +1,11 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/enums/enums.dart';
-import '/components/base_button_widget.dart';
+import '/components/base_button/base_button_widget.dart';
 import '/components/book_cancelation_order_sheet/book_cancelation_order_sheet_widget.dart';
-import '/components/book_info_part_widget.dart';
+import '/components/book_info_part/book_info_part_widget.dart';
 import '/components/book_reservartion_bottom_sheet/book_reservartion_bottom_sheet_widget.dart';
-import '/components/icon_info_row_widget.dart';
+import '/components/icon_info_row/icon_info_row_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -139,7 +139,10 @@ class _AdminBookDetailsPageWidgetState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Wiedźmin: Ostatnie Życzenie',
+                              valueOrDefault<String>(
+                                widget.book?.title,
+                                'title',
+                              ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyLarge
                                   .override(
@@ -148,14 +151,17 @@ class _AdminBookDetailsPageWidgetState
                                   ),
                             ),
                             Text(
-                              'Andrzej Sapkowski',
+                              valueOrDefault<String>(
+                                widget.book?.author,
+                                'author',
+                              ),
                               style: FlutterFlowTheme.of(context).bodyMedium,
                             ),
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 30.0, 0.0, 0.0),
                               child: Text(
-                                'Dostępne: 3',
+                                'Dostępne: ${widget.book?.available?.toString()}',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -197,7 +203,10 @@ class _AdminBookDetailsPageWidgetState
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 8.0, 0.0, 0.0),
                                 child: Text(
-                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eget cursus enim, tincidunt auctor urna. Aliquam nec urna molestie libero elementum cursus. In facilisis at dolor ac facilisis. Quisque in diam at diam gravida consectetur. Pellentesque suscipit purus libero. Fusce sed luctus diam, ut placerat dui. Donec nec tincidunt quam, vel pulvinar nisi. Nam tellus ex, dapibus sit amet consequat eu, rutrum et mi. Donec hendrerit eu turpis quis facilisis. Aenean eu laoreet orci, nec venenatis ipsum. In velit elit, finibus at ultrices malesuada, ultrices eu arcu.',
+                                  valueOrDefault<String>(
+                                    widget.book?.description,
+                                    'desc',
+                                  ),
                                   style:
                                       FlutterFlowTheme.of(context).bodyMedium,
                                 ),
@@ -246,7 +255,7 @@ class _AdminBookDetailsPageWidgetState
                                       updateCallback: () => setState(() {}),
                                       child: BookInfoPartWidget(
                                         bookInfoTitle: 'Kategoria',
-                                        bookInfoDesc: 'Fantasy',
+                                        bookInfoDesc: widget.book?.category,
                                       ),
                                     ),
                                     Padding(
@@ -257,7 +266,7 @@ class _AdminBookDetailsPageWidgetState
                                         updateCallback: () => setState(() {}),
                                         child: BookInfoPartWidget(
                                           bookInfoTitle: 'Język',
-                                          bookInfoDesc: 'Polski',
+                                          bookInfoDesc: widget.book?.language,
                                         ),
                                       ),
                                     ),
@@ -275,7 +284,7 @@ class _AdminBookDetailsPageWidgetState
                                       updateCallback: () => setState(() {}),
                                       child: BookInfoPartWidget(
                                         bookInfoTitle: 'Wydawca',
-                                        bookInfoDesc: 'SuperNowa',
+                                        bookInfoDesc: widget.book?.publisher,
                                       ),
                                     ),
                                     Padding(
@@ -286,7 +295,7 @@ class _AdminBookDetailsPageWidgetState
                                         updateCallback: () => setState(() {}),
                                         child: BookInfoPartWidget(
                                           bookInfoTitle: 'ISBN',
-                                          bookInfoDesc: '990090889',
+                                          bookInfoDesc: widget.book?.isbn,
                                         ),
                                       ),
                                     ),
@@ -336,7 +345,12 @@ class _AdminBookDetailsPageWidgetState
                                   itemSize: 40.0,
                                 ),
                                 Text(
-                                  '3.0',
+                                  formatNumber(
+                                    widget.book!.rating,
+                                    formatType: FormatType.custom,
+                                    format: '0.0',
+                                    locale: '',
+                                  ),
                                   style: FlutterFlowTheme.of(context)
                                       .bodyLarge
                                       .override(
@@ -564,62 +578,108 @@ class _AdminBookDetailsPageWidgetState
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Expanded(
-                                                  child: wrapWithModel(
-                                                    model:
-                                                        _model.baseButtonModel5,
-                                                    updateCallback: () =>
-                                                        setState(() {}),
-                                                    child: BaseButtonWidget(
-                                                      text: 'Usuń książkę',
-                                                      disabled: false,
-                                                      action: () async {
-                                                        await showModalBottomSheet(
-                                                          isScrollControlled:
-                                                              true,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          enableDrag: false,
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
-                                                                          context)
-                                                                      .unfocus(),
-                                                              child: Padding(
-                                                                padding: MediaQuery
-                                                                    .viewInsetsOf(
-                                                                        context),
-                                                                child:
-                                                                    BookCancelationOrderSheetWidget(
-                                                                  order: _model
-                                                                      .order!,
-                                                                  book: widget
-                                                                      .book!,
-                                                                  callback:
-                                                                      () async {
-                                                                    setState(
-                                                                        () {
-                                                                      _model.order =
-                                                                          null;
-                                                                    });
-                                                                  },
+                                                  child: InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      var confirmDialogResponse =
+                                                          await showDialog<
+                                                                  bool>(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (alertDialogContext) {
+                                                                  return AlertDialog(
+                                                                    title: Text(
+                                                                        'Usuwanie pozycji'),
+                                                                    content: Text(
+                                                                        'Czy napewno usunąć podaną pozycję?'),
+                                                                    actions: [
+                                                                      TextButton(
+                                                                        onPressed: () => Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            false),
+                                                                        child: Text(
+                                                                            'Anuluj'),
+                                                                      ),
+                                                                      TextButton(
+                                                                        onPressed: () => Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            true),
+                                                                        child: Text(
+                                                                            'Potwierdź'),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              ) ??
+                                                              false;
+                                                      await widget
+                                                          .book!.reference
+                                                          .delete();
+                                                    },
+                                                    child: wrapWithModel(
+                                                      model: _model
+                                                          .baseButtonModel5,
+                                                      updateCallback: () =>
+                                                          setState(() {}),
+                                                      child: BaseButtonWidget(
+                                                        text: 'Usuń książkę',
+                                                        disabled: false,
+                                                        action: () async {
+                                                          await showModalBottomSheet(
+                                                            isScrollControlled:
+                                                                true,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            enableDrag: false,
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return GestureDetector(
+                                                                onTap: () => _model
+                                                                        .unfocusNode
+                                                                        .canRequestFocus
+                                                                    ? FocusScope.of(
+                                                                            context)
+                                                                        .requestFocus(_model
+                                                                            .unfocusNode)
+                                                                    : FocusScope.of(
+                                                                            context)
+                                                                        .unfocus(),
+                                                                child: Padding(
+                                                                  padding: MediaQuery
+                                                                      .viewInsetsOf(
+                                                                          context),
+                                                                  child:
+                                                                      BookCancelationOrderSheetWidget(
+                                                                    order: _model
+                                                                        .order!,
+                                                                    book: widget
+                                                                        .book!,
+                                                                    callback:
+                                                                        () async {
+                                                                      setState(
+                                                                          () {
+                                                                        _model.order =
+                                                                            null;
+                                                                      });
+                                                                    },
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            );
-                                                          },
-                                                        ).then((value) =>
-                                                            safeSetState(
-                                                                () {}));
-                                                      },
+                                                              );
+                                                            },
+                                                          ).then((value) =>
+                                                              safeSetState(
+                                                                  () {}));
+                                                        },
+                                                      ),
                                                     ),
                                                   ),
                                                 ),

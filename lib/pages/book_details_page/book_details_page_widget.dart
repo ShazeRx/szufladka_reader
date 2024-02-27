@@ -1,11 +1,11 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/enums/enums.dart';
-import '/components/base_button_widget.dart';
+import '/components/base_button/base_button_widget.dart';
 import '/components/book_cancelation_order_sheet/book_cancelation_order_sheet_widget.dart';
-import '/components/book_info_part_widget.dart';
+import '/components/book_info_part/book_info_part_widget.dart';
 import '/components/book_reservartion_bottom_sheet/book_reservartion_bottom_sheet_widget.dart';
-import '/components/icon_info_row_widget.dart';
+import '/components/icon_info_row/icon_info_row_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -629,35 +629,57 @@ class _BookDetailsPageWidgetState extends State<BookDetailsPageWidget> {
                                 text: 'Wypożycz',
                                 disabled: false,
                                 action: () async {
-                                  await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    enableDrag: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return GestureDetector(
-                                        onTap: () => _model
-                                                .unfocusNode.canRequestFocus
-                                            ? FocusScope.of(context)
-                                                .requestFocus(
-                                                    _model.unfocusNode)
-                                            : FocusScope.of(context).unfocus(),
-                                        child: Padding(
-                                          padding:
-                                              MediaQuery.viewInsetsOf(context),
-                                          child:
-                                              BookReservartionBottomSheetWidget(
-                                            book: widget.book!,
-                                            callback: (order) async {
-                                              setState(() {
-                                                _model.order = order;
-                                              });
-                                            },
+                                  if (valueOrDefault<bool>(
+                                          currentUserDocument?.isActive,
+                                          false) ==
+                                      true) {
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      enableDrag: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () => _model
+                                                  .unfocusNode.canRequestFocus
+                                              ? FocusScope.of(context)
+                                                  .requestFocus(
+                                                      _model.unfocusNode)
+                                              : FocusScope.of(context)
+                                                  .unfocus(),
+                                          child: Padding(
+                                            padding: MediaQuery.viewInsetsOf(
+                                                context),
+                                            child:
+                                                BookReservartionBottomSheetWidget(
+                                              book: widget.book!,
+                                              callback: (order) async {
+                                                setState(() {
+                                                  _model.order = order;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ).then((value) => safeSetState(() {}));
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Twoje konto jest nieaktywne. Prosimy o aktywację konta w placówce biblioteki',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryBackground,
                                           ),
                                         ),
-                                      );
-                                    },
-                                  ).then((value) => safeSetState(() {}));
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                      ),
+                                    );
+                                  }
                                 },
                               ),
                             );

@@ -1,14 +1,15 @@
 import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'book_feature_vertical_widget.dart' show BookFeatureVerticalWidget;
+import 'book_list_view_widget.dart' show BookListViewWidget;
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class BookFeatureVerticalModel
-    extends FlutterFlowModel<BookFeatureVerticalWidget> {
+class BookListViewModel extends FlutterFlowModel<BookListViewWidget> {
   /// Initialization and disposal methods.
 
   @override

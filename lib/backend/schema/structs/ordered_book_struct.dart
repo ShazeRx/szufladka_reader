@@ -14,10 +14,12 @@ class OrderedBookStruct extends FFFirebaseStruct {
     DateTime? endDate,
     bool? canBeProlonged,
     DocumentReference? book,
+    OrderStatus? status,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _endDate = endDate,
         _canBeProlonged = canBeProlonged,
         _book = book,
+        _status = status,
         super(firestoreUtilData);
 
   // "endDate" field.
@@ -38,11 +40,18 @@ class OrderedBookStruct extends FFFirebaseStruct {
   set book(DocumentReference? val) => _book = val;
   bool hasBook() => _book != null;
 
+  // "status" field.
+  OrderStatus? _status;
+  OrderStatus? get status => _status;
+  set status(OrderStatus? val) => _status = val;
+  bool hasStatus() => _status != null;
+
   static OrderedBookStruct fromMap(Map<String, dynamic> data) =>
       OrderedBookStruct(
         endDate: data['endDate'] as DateTime?,
         canBeProlonged: data['canBeProlonged'] as bool?,
         book: data['book'] as DocumentReference?,
+        status: deserializeEnum<OrderStatus>(data['status']),
       );
 
   static OrderedBookStruct? maybeFromMap(dynamic data) => data is Map
@@ -53,6 +62,7 @@ class OrderedBookStruct extends FFFirebaseStruct {
         'endDate': _endDate,
         'canBeProlonged': _canBeProlonged,
         'book': _book,
+        'status': _status?.serialize(),
       }.withoutNulls;
 
   @override
@@ -68,6 +78,10 @@ class OrderedBookStruct extends FFFirebaseStruct {
         'book': serializeParam(
           _book,
           ParamType.DocumentReference,
+        ),
+        'status': serializeParam(
+          _status,
+          ParamType.Enum,
         ),
       }.withoutNulls;
 
@@ -89,6 +103,11 @@ class OrderedBookStruct extends FFFirebaseStruct {
           false,
           collectionNamePath: ['books'],
         ),
+        status: deserializeParam<OrderStatus>(
+          data['status'],
+          ParamType.Enum,
+          false,
+        ),
       );
 
   @override
@@ -99,18 +118,20 @@ class OrderedBookStruct extends FFFirebaseStruct {
     return other is OrderedBookStruct &&
         endDate == other.endDate &&
         canBeProlonged == other.canBeProlonged &&
-        book == other.book;
+        book == other.book &&
+        status == other.status;
   }
 
   @override
   int get hashCode =>
-      const ListEquality().hash([endDate, canBeProlonged, book]);
+      const ListEquality().hash([endDate, canBeProlonged, book, status]);
 }
 
 OrderedBookStruct createOrderedBookStruct({
   DateTime? endDate,
   bool? canBeProlonged,
   DocumentReference? book,
+  OrderStatus? status,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -120,6 +141,7 @@ OrderedBookStruct createOrderedBookStruct({
       endDate: endDate,
       canBeProlonged: canBeProlonged,
       book: book,
+      status: status,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,
