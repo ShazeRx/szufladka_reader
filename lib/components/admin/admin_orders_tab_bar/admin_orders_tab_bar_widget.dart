@@ -2,11 +2,13 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/enums/enums.dart';
 import '/components/admin/admin_order_list_tile/admin_order_list_tile_widget.dart';
+import '/components/admin/admin_reservation_bottom_sheet/admin_reservation_bottom_sheet_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'admin_orders_tab_bar_model.dart';
@@ -39,6 +41,20 @@ class _AdminOrdersTabBarWidgetState extends State<AdminOrdersTabBarWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => AdminOrdersTabBarModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (widget.parameter1 != null) {
+        _model.userOrders = await queryOrdersRecordOnce(
+          queryBuilder: (ordersRecord) => ordersRecord.where(
+            'user',
+            isEqualTo: widget.parameter1,
+          ),
+        );
+      } else {
+        _model.allOrders = await queryOrdersRecordOnce();
+      }
+    });
 
     _model.tabBarController = TabController(
       vsync: this,
@@ -78,84 +94,88 @@ class _AdminOrdersTabBarWidgetState extends State<AdminOrdersTabBarWidget>
         ),
         child: Padding(
           padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
-          child: InkWell(
-            splashColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            onDoubleTap: () async {
-              if (widget.parameter1 != null) {
-                _model.userOrders = await queryOrdersRecordOnce(
-                  queryBuilder: (ordersRecord) => ordersRecord.where(
-                    'user',
-                    isEqualTo: widget.parameter1,
-                  ),
-                );
-              } else {
-                _model.allOrders = await queryOrdersRecordOnce();
-              }
-
-              setState(() {});
-            },
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment(0.0, 0),
-                  child: TabBar(
-                    isScrollable: true,
-                    labelColor: FlutterFlowTheme.of(context).primary,
-                    unselectedLabelColor:
-                        FlutterFlowTheme.of(context).secondaryText,
-                    labelStyle: FlutterFlowTheme.of(context).bodyMedium,
-                    unselectedLabelStyle: TextStyle(),
-                    indicatorColor: FlutterFlowTheme.of(context).primary,
-                    indicatorWeight: 2.0,
-                    tabs: [
-                      Tab(
-                        text: 'Oczekujące',
-                      ),
-                      Tab(
-                        text: 'Upływające',
-                      ),
-                      Tab(
-                        text: 'Zarchiwizowane',
-                      ),
-                    ],
-                    controller: _model.tabBarController,
-                    onTap: (i) async {
-                      [() async {}, () async {}, () async {}][i]();
-                    },
-                  ),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment(0.0, 0),
+                child: TabBar(
+                  isScrollable: true,
+                  labelColor: FlutterFlowTheme.of(context).primary,
+                  unselectedLabelColor:
+                      FlutterFlowTheme.of(context).secondaryText,
+                  labelStyle: FlutterFlowTheme.of(context).bodyMedium,
+                  unselectedLabelStyle: TextStyle(),
+                  indicatorColor: FlutterFlowTheme.of(context).primary,
+                  indicatorWeight: 2.0,
+                  tabs: [
+                    Tab(
+                      text: 'Oczekujące',
+                    ),
+                    Tab(
+                      text: 'Upływające',
+                    ),
+                    Tab(
+                      text: 'Zarchiwizowane',
+                    ),
+                  ],
+                  controller: _model.tabBarController,
+                  onTap: (i) async {
+                    [() async {}, () async {}, () async {}][i]();
+                  },
                 ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _model.tabBarController,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 12.0, 16.0, 12.0),
-                        child: Builder(
-                          builder: (context) {
-                            final pending = (widget.parameter1 != null
-                                        ? _model.userOrders
-                                            ?.where((e) =>
-                                                e.status == OrderStatus.Pending)
-                                            .toList()
-                                        : _model.allOrders
-                                            ?.where((e) =>
-                                                e.status == OrderStatus.Pending)
-                                            .toList())
-                                    ?.toList() ??
-                                [];
-                            return ListView.builder(
-                              padding: EdgeInsets.zero,
-                              primary: false,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: pending.length,
-                              itemBuilder: (context, pendingIndex) {
-                                final pendingItem = pending[pendingIndex];
-                                return wrapWithModel(
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _model.tabBarController,
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          16.0, 12.0, 16.0, 12.0),
+                      child: Builder(
+                        builder: (context) {
+                          final pending = (widget.parameter1 != null
+                                      ? _model.userOrders
+                                          ?.where((e) =>
+                                              e.status == OrderStatus.Pending)
+                                          .toList()
+                                      : _model.allOrders
+                                          ?.where((e) =>
+                                              e.status == OrderStatus.Pending)
+                                          .toList())
+                                  ?.toList() ??
+                              [];
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            primary: false,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: pending.length,
+                            itemBuilder: (context, pendingIndex) {
+                              final pendingItem = pending[pendingIndex];
+                              return InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    enableDrag: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:
+                                            MediaQuery.viewInsetsOf(context),
+                                        child:
+                                            AdminReservationBottomSheetWidget(
+                                          order: pendingItem.reference,
+                                        ),
+                                      );
+                                    },
+                                  ).then((value) => safeSetState(() {}));
+                                },
+                                child: wrapWithModel(
                                   model:
                                       _model.adminOrderListTileModels1.getModel(
                                     pendingIndex.toString(),
@@ -169,108 +189,104 @@ class _AdminOrdersTabBarWidgetState extends State<AdminOrdersTabBarWidget>
                                     ),
                                     order: pendingItem,
                                   ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 12.0, 16.0, 12.0),
-                        child: Builder(
-                          builder: (context) {
-                            final completed = (widget.parameter1 != null
-                                        ? _model.userOrders
-                                            ?.where((e) =>
-                                                e.status ==
-                                                OrderStatus.Completed)
-                                            .toList()
-                                        : _model.allOrders
-                                            ?.where((e) =>
-                                                e.status ==
-                                                OrderStatus.Completed)
-                                            .toList())
-                                    ?.toList() ??
-                                [];
-                            return ListView.builder(
-                              padding: EdgeInsets.zero,
-                              primary: false,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: completed.length,
-                              itemBuilder: (context, completedIndex) {
-                                final completedItem = completed[completedIndex];
-                                return wrapWithModel(
-                                  model:
-                                      _model.adminOrderListTileModels2.getModel(
-                                    completedIndex.toString(),
-                                    completedIndex,
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          16.0, 12.0, 16.0, 12.0),
+                      child: Builder(
+                        builder: (context) {
+                          final completed = (widget.parameter1 != null
+                                      ? _model.userOrders
+                                          ?.where((e) =>
+                                              e.status == OrderStatus.Completed)
+                                          .toList()
+                                      : _model.allOrders
+                                          ?.where((e) =>
+                                              e.status == OrderStatus.Completed)
+                                          .toList())
+                                  ?.toList() ??
+                              [];
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            primary: false,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: completed.length,
+                            itemBuilder: (context, completedIndex) {
+                              final completedItem = completed[completedIndex];
+                              return wrapWithModel(
+                                model:
+                                    _model.adminOrderListTileModels2.getModel(
+                                  completedIndex.toString(),
+                                  completedIndex,
+                                ),
+                                updateCallback: () => setState(() {}),
+                                child: AdminOrderListTileWidget(
+                                  key: Key(
+                                    'Keyuip_${completedIndex.toString()}',
                                   ),
-                                  updateCallback: () => setState(() {}),
-                                  child: AdminOrderListTileWidget(
-                                    key: Key(
-                                      'Keyuip_${completedIndex.toString()}',
-                                    ),
-                                    order: completedItem,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                  order: completedItem,
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 12.0, 16.0, 12.0),
-                        child: Builder(
-                          builder: (context) {
-                            final archived = (widget.parameter1 != null
-                                        ? _model.userOrders
-                                            ?.where((e) =>
-                                                e.status ==
-                                                OrderStatus.Archived)
-                                            .toList()
-                                        : _model.allOrders
-                                            ?.where((e) =>
-                                                e.status ==
-                                                OrderStatus.Archived)
-                                            .toList())
-                                    ?.toList() ??
-                                [];
-                            return ListView.builder(
-                              padding: EdgeInsets.zero,
-                              primary: false,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: archived.length,
-                              itemBuilder: (context, archivedIndex) {
-                                final archivedItem = archived[archivedIndex];
-                                return wrapWithModel(
-                                  model:
-                                      _model.adminOrderListTileModels3.getModel(
-                                    archivedIndex.toString(),
-                                    archivedIndex,
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          16.0, 12.0, 16.0, 12.0),
+                      child: Builder(
+                        builder: (context) {
+                          final archived = (widget.parameter1 != null
+                                      ? _model.userOrders
+                                          ?.where((e) =>
+                                              e.status == OrderStatus.Archived)
+                                          .toList()
+                                      : _model.allOrders
+                                          ?.where((e) =>
+                                              e.status == OrderStatus.Archived)
+                                          .toList())
+                                  ?.toList() ??
+                              [];
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            primary: false,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: archived.length,
+                            itemBuilder: (context, archivedIndex) {
+                              final archivedItem = archived[archivedIndex];
+                              return wrapWithModel(
+                                model:
+                                    _model.adminOrderListTileModels3.getModel(
+                                  archivedIndex.toString(),
+                                  archivedIndex,
+                                ),
+                                updateCallback: () => setState(() {}),
+                                updateOnChange: true,
+                                child: AdminOrderListTileWidget(
+                                  key: Key(
+                                    'Key5jr_${archivedIndex.toString()}',
                                   ),
-                                  updateCallback: () => setState(() {}),
-                                  updateOnChange: true,
-                                  child: AdminOrderListTileWidget(
-                                    key: Key(
-                                      'Key5jr_${archivedIndex.toString()}',
-                                    ),
-                                    order: archivedItem,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                  order: archivedItem,
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

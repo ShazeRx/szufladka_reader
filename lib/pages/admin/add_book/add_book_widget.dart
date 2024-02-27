@@ -1092,6 +1092,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                   FlutterFlowTheme.of(context).primary,
                             ),
                           );
+                          context.safePop();
                         },
                         text: 'Dodaj książkę',
                         options: FFButtonOptions(
