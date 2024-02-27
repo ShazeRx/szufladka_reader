@@ -10,16 +10,19 @@ late FirebaseFirestore firestore;
 
 void main() {
   setUp(() async {
-    registerDependencies(testing: true);
-    firestore = getIt<FirebaseFirestore>();
     final mockUser = MockUser(
       isAnonymous: false,
       uid: '123',
       email: 'test@test.com',
       displayName: 'John',
     );
-    getIt.registerLazySingleton<FirebaseAuth>(
-        () => MockFirebaseAuth(signedIn: true, mockUser: mockUser));
+    registerTestDependencies(mockUser);
+    firestore = getIt<FirebaseFirestore>();
+
+    await firestore.collection('users').doc("123").set({
+      'username': 'John',
+      'email': 'test@test.com',
+    });
   });
 
   test("should return new arrivals", () async {

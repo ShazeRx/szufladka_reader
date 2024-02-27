@@ -7,22 +7,22 @@ import 'package:szufladka/backend/schema/enums/enums.dart';
 import 'package:szufladka/custom_code/actions/book_a_book.dart';
 import 'package:szufladka/injection/injector.dart';
 
+import 'remove_order_test.dart';
+
 late FirebaseFirestore firestore;
 
 const bookUid = "321";
 
 void main() {
   setUp(() async {
-    registerDependencies(testing: true);
-    firestore = getIt<FirebaseFirestore>();
     final mockUser = MockUser(
       isAnonymous: false,
       uid: '123',
       email: 'test@test.com',
       displayName: 'John',
     );
-    getIt.registerLazySingleton<FirebaseAuth>(
-        () => MockFirebaseAuth(signedIn: true, mockUser: mockUser));
+    registerTestDependencies(mockUser);
+    firestore = getIt<FirebaseFirestore>();
 
     await firestore.collection('users').doc("123").set({
       'username': 'John',

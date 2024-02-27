@@ -36,12 +36,10 @@ void main() {
   );
 
   setUp(() async {
-    registerDependencies(testing: true);
+    registerTestDependencies(mockUser);
     firestore = getIt<FirebaseFirestore>();
-    getIt.registerLazySingleton<FirebaseAuth>(
-            () => MockFirebaseAuth(signedIn: true, mockUser: mockUser));
 
-    await firestore.collection('users').doc(userUid).set({
+    await firestore.collection('users').doc("123").set({
       'username': 'John',
       'email': 'test@test.com',
     });
