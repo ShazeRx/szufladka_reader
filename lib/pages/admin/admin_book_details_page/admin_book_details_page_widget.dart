@@ -1,7 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/base_button/base_button_widget.dart';
-import '/components/book_cancelation_order_sheet/book_cancelation_order_sheet_widget.dart';
 import '/components/book_info_part/book_info_part_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -384,36 +383,7 @@ class _AdminBookDetailsPageWidgetState
                             child: BaseButtonWidget(
                               text: 'Edytuj książkę',
                               disabled: false,
-                              action: () async {
-                                await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  enableDrag: false,
-                                  context: context,
-                                  builder: (context) {
-                                    return GestureDetector(
-                                      onTap: () => _model
-                                              .unfocusNode.canRequestFocus
-                                          ? FocusScope.of(context)
-                                              .requestFocus(_model.unfocusNode)
-                                          : FocusScope.of(context).unfocus(),
-                                      child: Padding(
-                                        padding:
-                                            MediaQuery.viewInsetsOf(context),
-                                        child: BookCancelationOrderSheetWidget(
-                                          order: _model.order!,
-                                          book: widget.book!,
-                                          callback: () async {
-                                            setState(() {
-                                              _model.order = null;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ).then((value) => safeSetState(() {}));
-                              },
+                              action: () async {},
                             ),
                           ),
                         ),
@@ -426,82 +396,43 @@ class _AdminBookDetailsPageWidgetState
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Expanded(
-                            child: InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                var confirmDialogResponse =
-                                    await showDialog<bool>(
-                                          context: context,
-                                          builder: (alertDialogContext) {
-                                            return AlertDialog(
-                                              title: Text('Usuwanie pozycji'),
-                                              content: Text(
-                                                  'Czy napewno usunąć podaną pozycję?'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          alertDialogContext,
-                                                          false),
-                                                  child: Text('Anuluj'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          alertDialogContext,
-                                                          true),
-                                                  child: Text('Potwierdź'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ) ??
-                                        false;
-                                await widget.book!.reference.delete();
-                              },
-                              child: wrapWithModel(
-                                model: _model.baseButtonModel2,
-                                updateCallback: () => setState(() {}),
-                                child: BaseButtonWidget(
-                                  text: 'Usuń książkę',
-                                  disabled: false,
-                                  action: () async {
-                                    await showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      enableDrag: false,
-                                      context: context,
-                                      builder: (context) {
-                                        return GestureDetector(
-                                          onTap: () => _model
-                                                  .unfocusNode.canRequestFocus
-                                              ? FocusScope.of(context)
-                                                  .requestFocus(
-                                                      _model.unfocusNode)
-                                              : FocusScope.of(context)
-                                                  .unfocus(),
-                                          child: Padding(
-                                            padding: MediaQuery.viewInsetsOf(
-                                                context),
-                                            child:
-                                                BookCancelationOrderSheetWidget(
-                                              order: _model.order!,
-                                              book: widget.book!,
-                                              callback: () async {
-                                                setState(() {
-                                                  _model.order = null;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ).then((value) => safeSetState(() {}));
-                                  },
-                                ),
+                            child: wrapWithModel(
+                              model: _model.baseButtonModel2,
+                              updateCallback: () => setState(() {}),
+                              child: BaseButtonWidget(
+                                text: 'Usuń książkę',
+                                disabled: false,
+                                action: () async {
+                                  var confirmDialogResponse =
+                                      await showDialog<bool>(
+                                            context: context,
+                                            builder: (alertDialogContext) {
+                                              return AlertDialog(
+                                                title: Text('Usuwanie pozycji'),
+                                                content: Text(
+                                                    'Czy napewno usunąć podaną pozycję?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext,
+                                                            false),
+                                                    child: Text('Anuluj'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext,
+                                                            true),
+                                                    child: Text('Potwierdź'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ) ??
+                                          false;
+                                  await widget.book!.reference.delete();
+                                },
                               ),
                             ),
                           ),
