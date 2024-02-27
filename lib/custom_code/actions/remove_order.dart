@@ -1,4 +1,5 @@
 // Automatic FlutterFlow imports
+import '../../injection/injector.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/backend/schema/enums/enums.dart';
@@ -14,11 +15,6 @@ import 'package:flutter/material.dart';
 // and then add the boilerplate code using the green button on the right!
 
 Future removeOrder(DocumentReference orderRef) async {
-  final userRef = await getCurrentUserReference();
-
-  final firestore = FirebaseFirestore.instance;
-
-  final ordersRef = firestore.collection("orders");
 
   final orderSnapshot = await orderRef.get();
 

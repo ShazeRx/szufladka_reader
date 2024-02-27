@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 
+import '../../injection/injector.dart';
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 import '/backend/schema/enums/enums.dart';
@@ -43,7 +44,7 @@ class ReviewsRecord extends FirestoreRecord {
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
       parent != null
           ? parent.collection('reviews')
-          : FirebaseFirestore.instance.collectionGroup('reviews');
+          : getIt<FirebaseFirestore>().collectionGroup('reviews');
 
   static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
       parent.collection('reviews').doc(id);

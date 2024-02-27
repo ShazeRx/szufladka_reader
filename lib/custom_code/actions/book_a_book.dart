@@ -1,4 +1,5 @@
 // Automatic FlutterFlow imports
+import '../../injection/injector.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/backend/schema/enums/enums.dart';
@@ -14,7 +15,7 @@ import 'package:flutter/material.dart';
 // and then add the boilerplate code using the green button on the right!
 
 Future<OrdersRecord> bookABook(BooksRecord book) async {
-  final firestore = FirebaseFirestore.instance;
+  final firestore = getIt<FirebaseFirestore>();
   final ordersRef = firestore.collection("orders");
   final userRef = await getCurrentUserReference();
   final newOrder = createOrdersRecordData(

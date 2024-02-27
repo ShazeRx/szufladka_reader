@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:szufladka/injection/injector.dart';
 
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
@@ -87,7 +88,7 @@ class BooksRecord extends FirestoreRecord {
   }
 
   static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('books');
+      getIt<FirebaseFirestore>().collection('books');
 
   static Stream<BooksRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => BooksRecord.fromSnapshot(s));

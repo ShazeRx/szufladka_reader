@@ -1,4 +1,5 @@
 // Automatic FlutterFlow imports
+import '../../injection/injector.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/backend/schema/enums/enums.dart';
@@ -7,6 +8,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom actions
 import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
+
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
@@ -20,15 +22,17 @@ Future<List<OrderedBookStruct>> fetchOrderedBooksInStatuses(
 
   final userRef = await getCurrentUserReference();
 
-  final db = FirebaseFirestore.instance;
+  final db = getIt<FirebaseFirestore>();
 
   final ordersRef = db.collection("orders");
 
-  var query = ordersRef.where("user", isEqualTo: userRef).limit(5);
-
-  for (var status in statusList) {
-    query = query.where("status", isEqualTo: status.name);
-  }
+  var query = ordersRef
+      .where("user", isEqualTo: userRef)
+      .where("status",
+          whereIn: statusList.map(
+            (status) => status.name,
+          ))
+      .limit(5);
 
   final snapshot = await query.get();
 

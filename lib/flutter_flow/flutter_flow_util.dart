@@ -11,6 +11,7 @@ import 'package:json_path/json_path.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../injection/injector.dart';
 import '../main.dart';
 
 import 'lat_lng.dart';
@@ -260,7 +261,7 @@ extension IterableExt<T> on Iterable<T> {
 }
 
 extension StringDocRef on String {
-  DocumentReference get ref => FirebaseFirestore.instance.doc(this);
+  DocumentReference get ref => getIt<FirebaseFirestore>().doc(this);
 }
 
 void setAppLanguage(BuildContext context, String language) =>

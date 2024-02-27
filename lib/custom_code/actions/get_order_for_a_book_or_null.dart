@@ -1,4 +1,5 @@
 // Automatic FlutterFlow imports
+import '../../injection/injector.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/backend/schema/enums/enums.dart';
@@ -17,7 +18,7 @@ Future<DocumentReference?> getOrderForABookOrNull(
     DocumentReference book) async {
   final userRef = await getCurrentUserReference();
 
-  final firestore = FirebaseFirestore.instance;
+  final firestore = getIt<FirebaseFirestore>();
 
   final ordersRef = firestore.collection("orders");
 

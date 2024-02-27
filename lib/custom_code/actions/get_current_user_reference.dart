@@ -1,4 +1,5 @@
 // Automatic FlutterFlow imports
+import '../../injection/injector.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/backend/schema/enums/enums.dart';
@@ -16,10 +17,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Future<DocumentReference> getCurrentUserReference() async {
-  final user = FirebaseAuth.instance.currentUser!!;
+  final user = getIt<FirebaseAuth>().currentUser!;
 
   final uid = user.uid;
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = getIt<FirebaseFirestore>();
   final DocumentReference userRef = firestore.collection('users').doc(uid);
   return userRef;
 }

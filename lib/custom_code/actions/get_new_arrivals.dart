@@ -1,4 +1,5 @@
 // Automatic FlutterFlow imports
+import '../../injection/injector.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/backend/schema/enums/enums.dart';
@@ -15,7 +16,7 @@ import 'package:flutter/material.dart';
 
 Future<List<BooksRecord>> getNewArrivals() async {
   List<BooksRecord> newArrivals = [];
-  final firestore = FirebaseFirestore.instance;
+  final firestore = getIt<FirebaseFirestore>();
 
   final booksCollectionRef = firestore.collection("books");
 

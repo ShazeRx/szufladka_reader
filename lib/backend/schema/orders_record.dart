@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 
+import '../../injection/injector.dart';
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 import '/backend/schema/enums/enums.dart';
@@ -63,7 +64,7 @@ class OrdersRecord extends FirestoreRecord {
   }
 
   static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('orders');
+      getIt<FirebaseFirestore>().collection('orders');
 
   static Stream<OrdersRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => OrdersRecord.fromSnapshot(s));
