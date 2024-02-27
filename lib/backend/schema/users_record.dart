@@ -52,6 +52,16 @@ class UsersRecord extends FirestoreRecord {
   bool get isAdmin => _isAdmin ?? false;
   bool hasIsAdmin() => _isAdmin != null;
 
+  // "readerCode" field.
+  String? _readerCode;
+  String get readerCode => _readerCode ?? '';
+  bool hasReaderCode() => _readerCode != null;
+
+  // "isActive" field.
+  bool? _isActive;
+  bool get isActive => _isActive ?? false;
+  bool hasIsActive() => _isActive != null;
+
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
     _displayName = snapshotData['display_name'] as String?;
@@ -60,6 +70,8 @@ class UsersRecord extends FirestoreRecord {
     _createdTime = snapshotData['created_time'] as DateTime?;
     _phoneNumber = snapshotData['phone_number'] as String?;
     _isAdmin = snapshotData['isAdmin'] as bool?;
+    _readerCode = snapshotData['readerCode'] as String?;
+    _isActive = snapshotData['isActive'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -103,6 +115,8 @@ Map<String, dynamic> createUsersRecordData({
   DateTime? createdTime,
   String? phoneNumber,
   bool? isAdmin,
+  String? readerCode,
+  bool? isActive,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -113,6 +127,8 @@ Map<String, dynamic> createUsersRecordData({
       'created_time': createdTime,
       'phone_number': phoneNumber,
       'isAdmin': isAdmin,
+      'readerCode': readerCode,
+      'isActive': isActive,
     }.withoutNulls,
   );
 
@@ -130,7 +146,9 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e1?.uid == e2?.uid &&
         e1?.createdTime == e2?.createdTime &&
         e1?.phoneNumber == e2?.phoneNumber &&
-        e1?.isAdmin == e2?.isAdmin;
+        e1?.isAdmin == e2?.isAdmin &&
+        e1?.readerCode == e2?.readerCode &&
+        e1?.isActive == e2?.isActive;
   }
 
   @override
@@ -141,7 +159,9 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.uid,
         e?.createdTime,
         e?.phoneNumber,
-        e?.isAdmin
+        e?.isAdmin,
+        e?.readerCode,
+        e?.isActive
       ]);
 
   @override

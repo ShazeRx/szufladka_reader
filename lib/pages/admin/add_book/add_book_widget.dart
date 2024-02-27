@@ -1,9 +1,12 @@
+import '/auth/firebase_auth/auth_util.dart';
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -27,20 +30,23 @@ class _AddBookWidgetState extends State<AddBookWidget> {
     super.initState();
     _model = createModel(context, () => AddBookModel());
 
-    _model.jobTitleController ??= TextEditingController();
-    _model.jobTitleFocusNode ??= FocusNode();
+    _model.bookTitleController ??= TextEditingController();
+    _model.bookTitleFocusNode ??= FocusNode();
 
-    _model.workEmailController1 ??= TextEditingController();
-    _model.workEmailFocusNode1 ??= FocusNode();
+    _model.authorController ??= TextEditingController();
+    _model.authorFocusNode ??= FocusNode();
 
-    _model.workEmailController2 ??= TextEditingController();
-    _model.workEmailFocusNode2 ??= FocusNode();
+    _model.bookDescController ??= TextEditingController();
+    _model.bookDescFocusNode ??= FocusNode();
 
-    _model.workEmailController3 ??= TextEditingController();
-    _model.workEmailFocusNode3 ??= FocusNode();
+    _model.publisherController ??= TextEditingController();
+    _model.publisherFocusNode ??= FocusNode();
 
-    _model.workEmailController4 ??= TextEditingController();
-    _model.workEmailFocusNode4 ??= FocusNode();
+    _model.isbnController ??= TextEditingController();
+    _model.isbnFocusNode ??= FocusNode();
+
+    _model.availableController ??= TextEditingController();
+    _model.availableFocusNode ??= FocusNode();
   }
 
   @override
@@ -166,8 +172,9 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                           ),
                                         ),
                                         TextFormField(
-                                          controller: _model.jobTitleController,
-                                          focusNode: _model.jobTitleFocusNode,
+                                          controller:
+                                              _model.bookTitleController,
+                                          focusNode: _model.bookTitleFocusNode,
                                           autofocus: true,
                                           textCapitalization:
                                               TextCapitalization.words,
@@ -254,13 +261,104 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                               FlutterFlowTheme.of(context)
                                                   .primary,
                                           validator: _model
-                                              .jobTitleControllerValidator
+                                              .bookTitleControllerValidator
                                               .asValidator(context),
                                         ),
                                         TextFormField(
-                                          controller:
-                                              _model.workEmailController1,
-                                          focusNode: _model.workEmailFocusNode1,
+                                          controller: _model.authorController,
+                                          focusNode: _model.authorFocusNode,
+                                          autofocus: true,
+                                          textCapitalization:
+                                              TextCapitalization.words,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            labelText: 'Autor',
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .headlineMedium
+                                                    .override(
+                                                      fontFamily: 'Montserrat',
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                    ),
+                                            hintStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium,
+                                            errorStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .override(
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .error,
+                                                      fontSize: 12.0,
+                                                    ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .alternate,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            errorBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            focusedErrorBorder:
+                                                OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            filled: true,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryBackground,
+                                            contentPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16.0, 20.0, 16.0, 20.0),
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .headlineMedium,
+                                          cursorColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                          validator: _model
+                                              .authorControllerValidator
+                                              .asValidator(context),
+                                        ),
+                                        TextFormField(
+                                          controller: _model.bookDescController,
+                                          focusNode: _model.bookDescFocusNode,
                                           autofocus: true,
                                           textCapitalization:
                                               TextCapitalization.words,
@@ -343,13 +441,13 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                               FlutterFlowTheme.of(context)
                                                   .primary,
                                           validator: _model
-                                              .workEmailController1Validator
+                                              .bookDescControllerValidator
                                               .asValidator(context),
                                         ),
                                         TextFormField(
                                           controller:
-                                              _model.workEmailController2,
-                                          focusNode: _model.workEmailFocusNode2,
+                                              _model.publisherController,
+                                          focusNode: _model.publisherFocusNode,
                                           autofocus: true,
                                           textCapitalization:
                                               TextCapitalization.words,
@@ -431,7 +529,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                               FlutterFlowTheme.of(context)
                                                   .primary,
                                           validator: _model
-                                              .workEmailController2Validator
+                                              .publisherControllerValidator
                                               .asValidator(context),
                                         ),
                                       ].divide(SizedBox(height: 12.0)),
@@ -473,7 +571,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                                 ChipData('Literatura Faktu')
                                               ],
                                               onChanged: (val) => setState(() =>
-                                                  _model.choiceChipsValue1 =
+                                                  _model.categoryChipsValue =
                                                       val?.firstOrNull),
                                               selectedChipStyle: ChipStyle(
                                                 backgroundColor:
@@ -532,7 +630,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                               multiselect: false,
                                               alignment: WrapAlignment.start,
                                               controller: _model
-                                                      .choiceChipsValueController1 ??=
+                                                      .categoryChipsValueController ??=
                                                   FormFieldController<
                                                       List<String>>(
                                                 [],
@@ -562,7 +660,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                                 ChipData('Angielski')
                                               ],
                                               onChanged: (val) => setState(() =>
-                                                  _model.choiceChipsValue2 =
+                                                  _model.languageChipsValue =
                                                       val?.firstOrNull),
                                               selectedChipStyle: ChipStyle(
                                                 backgroundColor:
@@ -620,11 +718,11 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                               rowSpacing: 8.0,
                                               multiselect: false,
                                               initialized:
-                                                  _model.choiceChipsValue2 !=
+                                                  _model.languageChipsValue !=
                                                       null,
                                               alignment: WrapAlignment.start,
                                               controller: _model
-                                                      .choiceChipsValueController2 ??=
+                                                      .languageChipsValueController ??=
                                                   FormFieldController<
                                                       List<String>>(
                                                 ['Polski'],
@@ -649,10 +747,10 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                                         .labelMedium,
                                                   ),
                                                   TextFormField(
-                                                    controller: _model
-                                                        .workEmailController3,
-                                                    focusNode: _model
-                                                        .workEmailFocusNode3,
+                                                    controller:
+                                                        _model.isbnController,
+                                                    focusNode:
+                                                        _model.isbnFocusNode,
                                                     autofocus: true,
                                                     textCapitalization:
                                                         TextCapitalization
@@ -749,7 +847,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                                                 context)
                                                             .primary,
                                                     validator: _model
-                                                        .workEmailController3Validator
+                                                        .isbnControllerValidator
                                                         .asValidator(context),
                                                   ),
                                                 ].divide(SizedBox(height: 4.0)),
@@ -769,9 +867,9 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                                   ),
                                                   TextFormField(
                                                     controller: _model
-                                                        .workEmailController4,
+                                                        .availableController,
                                                     focusNode: _model
-                                                        .workEmailFocusNode4,
+                                                        .availableFocusNode,
                                                     autofocus: true,
                                                     textCapitalization:
                                                         TextCapitalization
@@ -863,12 +961,14 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                                             context)
                                                         .bodyLarge,
                                                     minLines: 1,
+                                                    keyboardType:
+                                                        TextInputType.number,
                                                     cursorColor:
                                                         FlutterFlowTheme.of(
                                                                 context)
                                                             .primary,
                                                     validator: _model
-                                                        .workEmailController4Validator
+                                                        .availableControllerValidator
                                                         .asValidator(context),
                                                   ),
                                                 ].divide(SizedBox(height: 4.0)),
@@ -947,8 +1047,51 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(
                           16.0, 12.0, 16.0, 12.0),
                       child: FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
+                        onPressed: () async {
+                          if (_model.formKey.currentState == null ||
+                              !_model.formKey.currentState!.validate()) {
+                            return;
+                          }
+
+                          await BooksRecord.collection.doc().set({
+                            ...createBooksRecordData(
+                              title: _model.bookTitleController.text,
+                              author: _model.authorController.text,
+                              available:
+                                  int.tryParse(_model.availableController.text),
+                              photo:
+                                  'https://s.lubimyczytac.pl/upload/books/240000/240310/1114358-352x500.jpg',
+                              rating: double.tryParse(
+                                  _model.availableController.text),
+                              description: _model.bookDescController.text,
+                              category: _model.categoryChipsValue,
+                              publisher: _model.publisherController.text,
+                              isbn: _model.isbnController.text,
+                              language: _model.languageChipsValue,
+                            ),
+                            ...mapToFirestore(
+                              {
+                                'dateAdded': FieldValue.serverTimestamp(),
+                              },
+                            ),
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Książka została dodana',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Plus Jakarta Sans',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                    ),
+                              ),
+                              duration: Duration(milliseconds: 4000),
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).primary,
+                            ),
+                          );
                         },
                         text: 'Dodaj książkę',
                         options: FFButtonOptions(

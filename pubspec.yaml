@@ -26,6 +26,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   auto_size_text: 3.0.0
+  barcode_widget: 2.0.3
   cached_network_image: 3.2.1
   cloud_firestore: 4.13.1
   cloud_firestore_platform_interface: 6.0.5
@@ -42,7 +43,11 @@ dependencies:
   firebase_performance_platform_interface: 0.1.4+16
   firebase_performance_web: 0.1.4+16
   flutter_animate: 4.1.1+1
+  flutter_barcode_scanner: 
+    git:
+      url: https://github.com/FlutterFlow/flutter_barcode_scanner
   flutter_cache_manager: 3.3.1
+  flutter_plugin_android_lifecycle: 2.0.17
   flutter_rating_bar: 4.0.1
   font_awesome_flutter: 10.6.0
   from_css_color: 2.0.0
@@ -75,6 +80,7 @@ dependencies:
   smooth_page_indicator: 1.1.0
   sqflite: 2.2.6
   stream_transform: 2.1.0
+  text_search: 1.0.1
   timeago: 3.2.2
   url_launcher: 6.1.10
   url_launcher_android: 6.0.27

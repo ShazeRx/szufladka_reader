@@ -1,12 +1,14 @@
+import '/backend/backend.dart';
+import '/components/book_list_view/book_list_view_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:text_search/text_search.dart';
 import 'admin_search_page_model.dart';
 export 'admin_search_page_model.dart';
 
@@ -29,10 +31,6 @@ class _AdminSearchPageWidgetState extends State<AdminSearchPageWidget> {
 
     _model.textController ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
-          _model.textController?.text = 'Wiedźmin';
-        }));
   }
 
   @override
@@ -52,8 +50,8 @@ class _AdminSearchPageWidgetState extends State<AdminSearchPageWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print('FloatingActionButton pressed ...');
+          onPressed: () async {
+            context.pushNamed('AddBook');
           },
           backgroundColor: FlutterFlowTheme.of(context).primary,
           elevation: 8.0,
@@ -88,10 +86,30 @@ class _AdminSearchPageWidgetState extends State<AdminSearchPageWidget> {
                         child: TextFormField(
                           controller: _model.textController,
                           focusNode: _model.textFieldFocusNode,
+                          onFieldSubmitted: (_) async {
+                            await queryBooksRecordOnce()
+                                .then(
+                                  (records) => _model.simpleSearchResults =
+                                      TextSearch(
+                                    records
+                                        .map(
+                                          (record) => TextSearchItem.fromTerms(
+                                              record, [record.title!]),
+                                        )
+                                        .toList(),
+                                  )
+                                          .search(_model.textController.text)
+                                          .map((r) => r.object)
+                                          .toList(),
+                                )
+                                .onError(
+                                    (_, __) => _model.simpleSearchResults = [])
+                                .whenComplete(() => setState(() {}));
+                          },
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            hintText: 'Search for books...',
+                            hintText: 'Szukaj książek...',
                             hintStyle:
                                 FlutterFlowTheme.of(context).bodySmall.override(
                                       fontFamily: 'Plus Jakarta Sans',
@@ -162,103 +180,63 @@ class _AdminSearchPageWidgetState extends State<AdminSearchPageWidget> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 120.0,
-                            height: 150.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            alignment: AlignmentDirectional(0.0, 0.0),
-                            child: Image.network(
-                              'https://s.lubimyczytac.pl/upload/books/240000/240312/490966-352x500.jpg',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              10.0, 0.0, 0.0, 0.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Wiedźmin: Miecz Przeznaczenia',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontSize: 16.0,
-                                    ),
-                              ),
-                              Text(
-                                'Andrzej Sapkowski',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  RatingBar.builder(
-                                    onRatingUpdate: (newValue) => setState(
-                                        () => _model.ratingBarValue = newValue),
-                                    itemBuilder: (context, index) => Icon(
-                                      Icons.star_rounded,
-                                      color:
-                                          FlutterFlowTheme.of(context).tertiary,
-                                    ),
-                                    direction: Axis.horizontal,
-                                    initialRating: _model.ratingBarValue ??=
-                                        5.0,
-                                    unratedColor: Color(0xFF9E9E9E),
-                                    itemCount: 5,
-                                    itemSize: 10.0,
-                                    glowColor:
-                                        FlutterFlowTheme.of(context).tertiary,
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Builder(
+                      builder: (context) {
+                        final searchedBooks =
+                            _model.simpleSearchResults.toList();
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          itemCount: searchedBooks.length,
+                          itemBuilder: (context, searchedBooksIndex) {
+                            final searchedBooksItem =
+                                searchedBooks[searchedBooksIndex];
+                            return Container(
+                              height: 200.0,
+                              decoration: BoxDecoration(),
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed(
+                                    'BookDetailsPage',
+                                    queryParameters: {
+                                      'book': serializeParam(
+                                        searchedBooksItem,
+                                        ParamType.Document,
+                                      ),
+                                    }.withoutNulls,
+                                    extra: <String, dynamic>{
+                                      'book': searchedBooksItem,
+                                    },
+                                  );
+                                },
+                                child: wrapWithModel(
+                                  model: _model.bookListViewModels.getModel(
+                                    searchedBooksIndex.toString(),
+                                    searchedBooksIndex,
                                   ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        5.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      '5.0',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Plus Jakarta Sans',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            fontSize: 12.0,
-                                          ),
+                                  updateCallback: () => setState(() {}),
+                                  child: BookListViewWidget(
+                                    key: Key(
+                                      'Key1nk_${searchedBooksIndex.toString()}',
                                     ),
+                                    book: searchedBooksItem,
                                   ),
-                                ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
