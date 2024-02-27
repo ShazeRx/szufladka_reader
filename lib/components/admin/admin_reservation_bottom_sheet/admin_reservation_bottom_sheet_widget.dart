@@ -1,8 +1,9 @@
-import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/actions/index.dart' as actions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,12 +13,10 @@ export 'admin_reservation_bottom_sheet_model.dart';
 class AdminReservationBottomSheetWidget extends StatefulWidget {
   const AdminReservationBottomSheetWidget({
     super.key,
-    required this.callback,
-    required this.book,
+    required this.order,
   });
 
-  final Future Function(OrdersRecord? order)? callback;
-  final BooksRecord? book;
+  final DocumentReference? order;
 
   @override
   State<AdminReservationBottomSheetWidget> createState() =>
@@ -205,8 +204,46 @@ class _AdminReservationBottomSheetWidgetState
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                     child: FFButtonWidget(
-                      onPressed: () {
-                        print('Button pressed ...');
+                      onPressed: () async {
+                        var confirmDialogResponse = await showDialog<bool>(
+                              context: context,
+                              builder: (alertDialogContext) {
+                                return AlertDialog(
+                                  title: Text('Potwierdzenie wydania'),
+                                  content: Text('Czy napewno wydać pozycję?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, false),
+                                      child: Text('Anuluj'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, true),
+                                      child: Text('Potwierdź'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ) ??
+                            false;
+                        await actions.completeOrder(
+                          widget.order!,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Wydano pozycję',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).alternate,
+                              ),
+                            ),
+                            duration: Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).primary,
+                          ),
+                        );
+                        Navigator.pop(context);
                       },
                       text: 'Wydaj pozycję',
                       options: FFButtonOptions(
@@ -242,8 +279,47 @@ class _AdminReservationBottomSheetWidgetState
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                     child: FFButtonWidget(
-                      onPressed: () {
-                        print('Button pressed ...');
+                      onPressed: () async {
+                        var confirmDialogResponse = await showDialog<bool>(
+                              context: context,
+                              builder: (alertDialogContext) {
+                                return AlertDialog(
+                                  title: Text('Potwierdzenie anulowania'),
+                                  content:
+                                      Text('Czy napewno anulować zamówienie?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, false),
+                                      child: Text('Anuluj'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, true),
+                                      child: Text('Potwierdź'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ) ??
+                            false;
+                        await actions.removeOrder(
+                          widget.order!,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Anulowano zamówienie',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).alternate,
+                              ),
+                            ),
+                            duration: Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).primary,
+                          ),
+                        );
+                        Navigator.pop(context);
                       },
                       text: 'Anuluj zamówienia',
                       options: FFButtonOptions(
